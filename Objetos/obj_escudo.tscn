@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://b2qbwogrbwtl2"]
+
+[ext_resource type="Script" uid="uid://dmlrbgom0birb" path="res://Objetos/scr_escudo.gd" id="1_vovak"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1odr4"]
+size = Vector2(18, 60)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vovak"]
+size = Vector2(16, 57)
+
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=1982691460 groups=["escudo"]]
+script = ExtResource("1_vovak")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1552333485]
+position = Vector2(0, -26)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=197988337]
+position = Vector2(0, 26)
+shape = SubResource("RectangleShape2D_1odr4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1976699524]
+shape = SubResource("RectangleShape2D_vovak")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

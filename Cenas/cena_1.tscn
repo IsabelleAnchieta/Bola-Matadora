@@ -147,9 +147,6 @@ width = 8.0
 default_color = Color(0, 0.64444697, 0.2616901, 1)
 gradient = SubResource("Gradient_1kfv5")
 
-[node name="Boss" parent="." unique_id=1399944755 instance=ExtResource("4_1kfv5")]
-position = Vector2(605, 158)
-
 [node name="RastroBoss" type="Line2D" parent="." unique_id=996978763]
 width = 8.0
 default_color = Color(1, 0, 0, 1)
@@ -165,3 +162,6 @@ visible = false
 
 [node name="Pause" parent="CanvasLayer" unique_id=395803007 instance=ExtResource("6_bk5vs")]
 visible = false
+
+[node name="Boss" parent="." unique_id=1399944755 instance=ExtResource("4_1kfv5")]
+position = Vector2(771, 114)

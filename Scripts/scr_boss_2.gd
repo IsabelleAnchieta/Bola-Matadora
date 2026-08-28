@@ -5,11 +5,12 @@ extends CharacterBody2D
 @onready var cooldown = $Timer
 @onready var PartImpc = $ParticulasImpacto
 @onready var deathtime = $Timer2
+@onready var escudo = $escudo
 
 var pontos_rastro: Array[Vector2] = []
 
 var dead = false
-var vida = 5
+var vida = 3
 var attacking = false
 var direcao = Vector2(1, 1).normalized()
 
@@ -21,6 +22,10 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if !dead:
+		var look = global_position.direction_to(target.global_position)
+		escudo.global_position = global_position + look * 40
+		escudo.look_at(target.global_position)
+		escudo.look_at(target.global_position)
 		velocidade = move_toward(velocidade, 0, desaceleracao * delta)
 
 		velocity = direcao * velocidade

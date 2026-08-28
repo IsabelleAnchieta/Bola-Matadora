@@ -56,11 +56,14 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 			body.vida -= dano
 			vida_boss.atualizar_vida(body.vida)
 			body.cooldown.start()
-			print(body.vida)
 		else:
 			rebater(direcao, body.velocidade)
 			posse = false
 			body.attacking = false
+	
+	if body.is_in_group("escudo"):
+		posse = false
+		rebater(direcao, velocidade + 100)
 
 
 

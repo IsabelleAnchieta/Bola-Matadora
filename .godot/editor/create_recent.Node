@@ -1,3 +1,6 @@
+CollisionShape2D
+Area2D
+CharacterBody2D
 Panel
 PanelContainer
 HBoxContainer
@@ -6,9 +9,6 @@ Control
 CenterContainer
 Container
 ColorRect
-CollisionShape2D
 Button
 Label
 CanvasLayer
-Area2D
-Timer

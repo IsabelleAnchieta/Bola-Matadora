@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://ch3iag1u5m4kh"]
+
+[ext_resource type="Script" uid="uid://cnhnelmda3wr1" path="res://Scripts/scr_boss_2.gd" id="1_oemci"]
+[ext_resource type="PackedScene" uid="uid://b2qbwogrbwtl2" path="res://Objetos/obj_escudo.tscn" id="2_qpeuy"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dobb0"]
+radius = 34.0147
+
+[sub_resource type="QuadMesh" id="QuadMesh_kxxtb"]
+
+[sub_resource type="MeshTexture" id="MeshTexture_trk7f"]
+mesh = SubResource("QuadMesh_kxxtb")
+image_size = Vector2(3, 3)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ocg6d"]
+lifetime_randomness = 0.2
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 465.53998
+initial_velocity_max = 1000.0
+gravity = Vector3(0, 0, 0)
+color = Color(9.62615e-07, 0.75716144, 0.16338447, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_trk7f"]
+radius = 43.046486
+
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=1399944755 groups=["enemies"]]
+collision_layer = 16
+collision_mask = 6
+script = ExtResource("1_oemci")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=271543012]
+shape = SubResource("CircleShape2D_dobb0")
+debug_color = Color(0.7490196, 0.45882353, 0, 0.65882355)
+
+[node name="Timer" type="Timer" parent="." unique_id=1570761417]
+wait_time = 10.0
+
+[node name="Timer2" type="Timer" parent="." unique_id=1981572862]
+
+[node name="ParticulasImpacto" type="GPUParticles2D" parent="." unique_id=1045792868]
+emitting = false
+amount = 15
+texture = SubResource("MeshTexture_trk7f")
+lifetime = 0.2
+process_material = SubResource("ParticleProcessMaterial_ocg6d")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1745261366]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1971655273]
+shape = SubResource("CircleShape2D_trk7f")
+debug_color = Color(0, 0.6515895, 0.013452545, 0.41960785)
+
+[node name="escudo" parent="." unique_id=1982691460 instance=ExtResource("2_qpeuy")]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="Timer2" to="." method="_on_timer_2_timeout"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://f3fr70hx37n8"]
+
+[ext_resource type="Script" uid="uid://c5ivkqcxup04c" path="res://Scripts/scr_bola.gd" id="1_xptm7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_er5oi"]
+radius = 18.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_04ycg"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_ldi02"]
+
+[sub_resource type="MeshTexture" id="MeshTexture_ldi02"]
+mesh = SubResource("QuadMesh_ldi02")
+image_size = Vector2(3, 3)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ydw6k"]
+lifetime_randomness = 0.2
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 465.53998
+initial_velocity_max = 1000.0
+gravity = Vector3(0, 0, 0)
+color = Color(0.40784314, 0, 0, 1)
+
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=357786640 groups=["bola"]]
+collision_layer = 2
+collision_mask = 29
+script = ExtResource("1_xptm7")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1513872978]
+collision_layer = 2
+collision_mask = 25
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1215413562]
+shape = SubResource("CircleShape2D_er5oi")
+debug_color = Color(0.9666391, 0.1368505, 0.3192298, 0.41960785)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1645719056]
+shape = SubResource("CircleShape2D_04ycg")
+debug_color = Color(0.9675438, 0.14596155, 0.28174782, 0.41960785)
+
+[node name="ParticulasImpacto" type="GPUParticles2D" parent="." unique_id=24394094]
+emitting = false
+amount = 15
+texture = SubResource("MeshTexture_ldi02")
+lifetime = 0.2
+process_material = SubResource("ParticleProcessMaterial_ydw6k")
+
+[node name="Timer" type="Timer" parent="." unique_id=234542544]
+wait_time = 0.1
+one_shot = true
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

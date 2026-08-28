@@ -28,6 +28,7 @@ bola=""
 player=""
 enemies=""
 paredes=""
+escudo=""
 
 [input]
 
