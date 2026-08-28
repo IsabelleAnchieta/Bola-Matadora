@@ -1,0 +1,17 @@
+res://Enemies/obj_boss1.tscn
+res://Scripts/scr_boss_1.gd
+res://Objetos/obj_bola.tscn
+res://Scripts/scr_bola.gd
+res://Cenas/cena_1.tscn
+res://Player/obj_Player.tscn
+res://Scripts/scr_player.gd
+res://scr_tela_morte.gd
+res://GUI/GUI_tela_morte.tscn
+res://Scripts/scr_arena1.gd
+res://GUI/GUI_pause.tscn
+res://GUI/scr_tela_morte.gd
+res://GUI/scr_pause.gd
+res://scr_BossLifeBar.gd
+res://GUI/GUI_BossLifeBar.tscn
+res://GUI/GUI_quadrado_life.tscn
+res://GUI/scr_quadrado_life.gd
