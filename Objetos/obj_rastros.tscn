@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://cpolpv3twucx1"]
+
+[sub_resource type="Gradient" id="Gradient_h8ygh"]
+colors = PackedColorArray(0.14933985, 0.6444292, 3.85046e-07, 1, 2.2140146e-06, 0.53286433, 0.7753291, 0)
+
+[sub_resource type="Gradient" id="Gradient_0wji3"]
+colors = PackedColorArray(1, 0, 0, 1, 1, 0.29411766, 1, 0)
+
+[node name="Node2D" type="Node2D" unique_id=1516733017]
+
+[node name="RastroBola2" type="Line2D" parent="." unique_id=1628212264]
+width = 8.0
+default_color = Color(0, 0.64444697, 0.2616901, 1)
+gradient = SubResource("Gradient_h8ygh")
+
+[node name="RastroBola" type="Line2D" parent="." unique_id=1498378327]
+width = 8.0
+default_color = Color(1, 0, 0, 1)
+gradient = SubResource("Gradient_0wji3")

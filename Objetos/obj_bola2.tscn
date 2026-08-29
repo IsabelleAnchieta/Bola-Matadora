@@ -1,6 +1,7 @@
-[gd_scene format=3 uid="uid://f3fr70hx37n8"]
+[gd_scene format=3 uid="uid://c8g7hblyx238y"]
 
-[ext_resource type="Script" uid="uid://c5ivkqcxup04c" path="res://Scripts/scr_bola.gd" id="1_xptm7"]
+[ext_resource type="Script" uid="uid://co3enrbr4xkwx" path="res://Objetos/scr_bola_2.gd" id="1_n4xa6"]
+[ext_resource type="PackedScene" uid="uid://cpolpv3twucx1" path="res://Objetos/obj_rastros.tscn" id="2_532ik"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_er5oi"]
 radius = 18.0
@@ -24,20 +25,21 @@ color = Color(0.40784314, 0, 0, 1)
 
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=357786640 groups=["bola"]]
 collision_layer = 2
-collision_mask = 31
-script = ExtResource("1_xptm7")
+collision_mask = 15
+script = ExtResource("1_n4xa6")
+CenaRastro = ExtResource("2_532ik")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1513872978]
 collision_layer = 2
-collision_mask = 25
+collision_mask = 27
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1215413562]
 shape = SubResource("CircleShape2D_er5oi")
-debug_color = Color(0.9666391, 0.1368505, 0.3192298, 0.41960785)
+debug_color = Color(0.4392204, 0.45558864, 0.9933782, 0.41960785)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1645719056]
 shape = SubResource("CircleShape2D_04ycg")
-debug_color = Color(0.9675438, 0.14596155, 0.28174782, 0.41960785)
+debug_color = Color(0.4218849, 0.46226788, 1, 0.41960785)
 
 [node name="ParticulasImpacto" type="GPUParticles2D" parent="." unique_id=24394094]
 emitting = false

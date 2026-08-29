@@ -7,3 +7,9 @@ res://Objetos/obj_escudo.tscn
 res://Objetos/obj_bola.tscn
 res://Objetos/scr_escudo.gd
 res://Scripts/scr_boss_1.gd
+res://Enemies/obj_boss3.tscn
+res://Enemies/scr_boss_3.gd
+res://Enemies/obj_boss4.tscn
+res://Enemies/scr_boss_4.gd
+res://Objetos/obj_bola2.tscn
+res://Objetos/scr_bola_2.gd

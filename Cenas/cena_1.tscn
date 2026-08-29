@@ -3,9 +3,9 @@
 [ext_resource type="Script" uid="uid://cb7yathtluvt0" path="res://Scripts/scr_arena1.gd" id="1_1kfv5"]
 [ext_resource type="PackedScene" uid="uid://cpmajt36a5qvg" path="res://Player/obj_Player.tscn" id="2_owwqi"]
 [ext_resource type="PackedScene" uid="uid://f3fr70hx37n8" path="res://Objetos/obj_bola.tscn" id="3_g1fjc"]
-[ext_resource type="PackedScene" uid="uid://dvoj76hk6iwmm" path="res://Enemies/obj_boss1.tscn" id="4_1kfv5"]
 [ext_resource type="PackedScene" uid="uid://dohmajk8ebdym" path="res://GUI/GUI_tela_morte.tscn" id="5_ln4ob"]
 [ext_resource type="PackedScene" uid="uid://bpxelsvgfdoot" path="res://GUI/GUI_pause.tscn" id="6_bk5vs"]
+[ext_resource type="PackedScene" uid="uid://ew271owtja0p" path="res://Enemies/obj_boss4.tscn" id="7_aw1up"]
 [ext_resource type="PackedScene" uid="uid://bqhxhk5fk4874" path="res://GUI/GUI_BossLifeBar.tscn" id="7_ptkc1"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_g1fjc"]
@@ -163,5 +163,5 @@ visible = false
 [node name="Pause" parent="CanvasLayer" unique_id=395803007 instance=ExtResource("6_bk5vs")]
 visible = false
 
-[node name="Boss" parent="." unique_id=1399944755 instance=ExtResource("4_1kfv5")]
-position = Vector2(771, 114)
+[node name="Boss" parent="." unique_id=1399944755 instance=ExtResource("7_aw1up")]
+position = Vector2(771, 205)
