@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://bj1fd4gcfywyb"]
+
+[sub_resource type="Gradient" id="Gradient_0wji3"]
+colors = PackedColorArray(1, 0, 0, 1, 1, 0.29411766, 1, 0)
+
+[node name="RastroBoss" type="Line2D" unique_id=567054361]
+width = 8.0
+default_color = Color(1, 0, 0, 1)
+gradient = SubResource("Gradient_0wji3")

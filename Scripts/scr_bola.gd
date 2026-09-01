@@ -2,7 +2,6 @@ extends CharacterBody2D
 
 @onready var rastro = get_parent().get_node("RastroBola")
 @onready var rastro2 = get_parent().get_node("RastroBola2")
-@onready var vida_boss = get_parent().get_node("CanvasLayer/VidaBoss")
 @onready var PartImpc = $ParticulasImpacto
 @onready var Boom = $Timer
 
@@ -40,32 +39,8 @@ func rebater(nova_direcao: Vector2, nova_forca: float):
 
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
-	if body.is_in_group("player"):
-		if velocidade <= 0:
-			posse = true
-		elif !posse:
-			body.death()
-		var direcao_nova = global_position.direction_to(body.global_position)
-		direcao = direcao_nova
-		velocidade = 100.0
-	
-	if body.is_in_group("enemies"):
-		if body.attacking == false and posse:
-			body.rebater(direcao, velocidade)
-			rebater(direcao, velocidade)
-			body.vida -= dano
-			vida_boss.atualizar_vida(body.vida)
-			body.cooldown.start()
-		else:
-			rebater(direcao, body.velocidade)
-			posse = false
-			body.attacking = false
-	
-	if body.is_in_group("escudo"):
-		posse = false
-		rebater(direcao, velocidade + 100)
-
-
+	if body.has_method("receber_impacto"):
+		body.receber_impacto(self)
 
 func _on_area_2d_body_exited(body: Node2D) -> void:
 	if body.is_in_group("player"):

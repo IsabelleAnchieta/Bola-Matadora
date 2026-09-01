@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://b6byl6blk3yj7"]
+
+[ext_resource type="Script" uid="uid://cssil3ogu2r3a" path="res://Scripts/scr_paredequebravel.gd" id="1_4tyjc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4tyjc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r8ho4"]
+size = Vector2(22, 22)
+
+[node name="StaticBody2D" type="StaticBody2D" unique_id=1526160338 groups=["ParedeQ"]]
+script = ExtResource("1_4tyjc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=950385413]
+shape = SubResource("RectangleShape2D_4tyjc")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=488980613]
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=762334231]
+shape = SubResource("RectangleShape2D_r8ho4")
+
+[node name="Timer" type="Timer" parent="." unique_id=913749670]
+wait_time = 0.1
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

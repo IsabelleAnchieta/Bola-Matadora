@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dohmajk8ebdym" path="res://GUI/GUI_tela_morte.tscn" id="5_ln4ob"]
 [ext_resource type="PackedScene" uid="uid://bpxelsvgfdoot" path="res://GUI/GUI_pause.tscn" id="6_bk5vs"]
 [ext_resource type="PackedScene" uid="uid://ew271owtja0p" path="res://Enemies/obj_boss4.tscn" id="7_aw1up"]
+[ext_resource type="PackedScene" uid="uid://dvoj76hk6iwmm" path="res://Enemies/obj_boss1.tscn" id="7_g8xua"]
 [ext_resource type="PackedScene" uid="uid://bqhxhk5fk4874" path="res://GUI/GUI_BossLifeBar.tscn" id="7_ptkc1"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_g1fjc"]
@@ -119,9 +120,6 @@ colors = PackedColorArray(1, 0, 0, 1, 1, 0.29411766, 1, 0)
 [sub_resource type="Gradient" id="Gradient_1kfv5"]
 colors = PackedColorArray(0.14933985, 0.6444292, 3.85046e-07, 1, 2.2140146e-06, 0.53286433, 0.7753291, 0)
 
-[sub_resource type="Gradient" id="Gradient_ln4ob"]
-colors = PackedColorArray(1, 0, 0, 1, 1, 0.29411766, 1, 0)
-
 [node name="Cena 1" type="Node2D" unique_id=1184654704]
 script = ExtResource("1_1kfv5")
 
@@ -138,6 +136,7 @@ collision_layer = 7
 position = Vector2(281, 207)
 
 [node name="RastroBola" type="Line2D" parent="." unique_id=380006796]
+points = PackedVector2Array(275, 211)
 width = 8.0
 default_color = Color(1, 0, 0, 1)
 gradient = SubResource("Gradient_g1fjc")
@@ -147,14 +146,11 @@ width = 8.0
 default_color = Color(0, 0.64444697, 0.2616901, 1)
 gradient = SubResource("Gradient_1kfv5")
 
-[node name="RastroBoss" type="Line2D" parent="." unique_id=996978763]
-width = 8.0
-default_color = Color(1, 0, 0, 1)
-gradient = SubResource("Gradient_ln4ob")
-
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=719537638]
 
 [node name="VidaBoss" parent="CanvasLayer" unique_id=1380331818 instance=ExtResource("7_ptkc1")]
+
+[node name="VidaBoss2" parent="CanvasLayer" unique_id=1440715145 instance=ExtResource("7_ptkc1")]
 
 [node name="TelaMorte" parent="CanvasLayer" unique_id=1056075377 instance=ExtResource("5_ln4ob")]
 process_mode = 3
@@ -163,5 +159,13 @@ visible = false
 [node name="Pause" parent="CanvasLayer" unique_id=395803007 instance=ExtResource("6_bk5vs")]
 visible = false
 
-[node name="Boss" parent="." unique_id=1399944755 instance=ExtResource("7_aw1up")]
-position = Vector2(771, 205)
+[node name="Boss" parent="." unique_id=1399944755 instance=ExtResource("7_g8xua")]
+position = Vector2(814, 249)
+
+[node name="Boss2" parent="." unique_id=1054662989 instance=ExtResource("7_aw1up")]
+position = Vector2(932, 426)
+
+[node name="Enemy" parent="." unique_id=194988687 instance=ExtResource("7_aw1up")]
+position = Vector2(974, 245)
+scale = Vector2(0.32060596, 0.32169256)
+vida = 1

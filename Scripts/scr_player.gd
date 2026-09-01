@@ -16,7 +16,6 @@ var velocidade_mouse: float
 var recarregando = false
 var attack_direction : Vector2
 
-
 #Tudo que envolve dash
 var Dashing = false
 var RecarregarDash = false
@@ -118,3 +117,13 @@ func _on_mirando_body_exited(body: Node2D) -> void:
 
 func death():
 	dead = true
+
+func receber_impacto(bola):
+	if bola.velocidade <= 0:
+		bola.posse = true
+	elif !bola.posse:
+		death()
+
+	var direcao_nova = bola.global_position.direction_to(global_position)
+	bola.direcao = direcao_nova
+	bola.velocidade = 100

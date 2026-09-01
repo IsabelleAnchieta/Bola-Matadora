@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bqhxhk5fk4874"]
 
-[ext_resource type="Script" uid="uid://cjpw3wl2gby45" path="res://scr_BossLifeBar.gd" id="1_ggfji"]
+[ext_resource type="Script" uid="uid://cjpw3wl2gby45" path="res://Scripts/scr_BossLifeBar.gd" id="1_ggfji"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ggfji"]
 bg_color = Color(0.039215688, 0.039215688, 0.039215688, 0.5019608)

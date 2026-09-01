@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ch3iag1u5m4kh"]
 
-[ext_resource type="Script" uid="uid://cnhnelmda3wr1" path="res://Scripts/scr_boss_2.gd" id="1_oemci"]
+[ext_resource type="Script" uid="uid://cnhnelmda3wr1" path="res://Enemies/scr_bosses/scr_boss_2.gd" id="1_oemci"]
 [ext_resource type="PackedScene" uid="uid://b2qbwogrbwtl2" path="res://Objetos/obj_escudo.tscn" id="2_qpeuy"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dobb0"]
@@ -23,6 +23,9 @@ color = Color(9.62615e-07, 0.75716144, 0.16338447, 1)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_trk7f"]
 radius = 43.046486
+
+[sub_resource type="Gradient" id="Gradient_qpeuy"]
+colors = PackedColorArray(0, 1, 0, 1, 0, 1, 1, 0.582)
 
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=1399944755 groups=["enemies"]]
 collision_layer = 16
@@ -52,6 +55,10 @@ shape = SubResource("CircleShape2D_trk7f")
 debug_color = Color(0, 0.6515895, 0.013452545, 0.41960785)
 
 [node name="escudo" parent="." unique_id=1982691460 instance=ExtResource("2_qpeuy")]
+
+[node name="RastroBoss" type="Line2D" parent="." unique_id=408694791]
+default_color = Color(0, 0.6627277, 1.540184e-06, 1)
+gradient = SubResource("Gradient_qpeuy")
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="timeout" from="Timer2" to="." method="_on_timer_2_timeout"]

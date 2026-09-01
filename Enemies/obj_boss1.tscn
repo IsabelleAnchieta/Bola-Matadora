@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dvoj76hk6iwmm"]
 
-[ext_resource type="Script" uid="uid://0lefnlm65dle" path="res://Scripts/scr_boss_1.gd" id="1_trk7f"]
+[ext_resource type="Script" uid="uid://0lefnlm65dle" path="res://Enemies/scr_bosses/scr_boss_1.gd" id="1_trk7f"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dobb0"]
 radius = 31.016125
@@ -22,6 +22,9 @@ color = Color(9.62615e-07, 0.75716144, 0.16338447, 1)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_trk7f"]
 radius = 42.0119
+
+[sub_resource type="Gradient" id="Gradient_trk7f"]
+colors = PackedColorArray(0, 1, 0, 1, 0, 1, 1, 0.582)
 
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=1399944755 groups=["enemies"]]
 collision_layer = 16
@@ -49,6 +52,10 @@ process_material = SubResource("ParticleProcessMaterial_ocg6d")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1971655273]
 shape = SubResource("CircleShape2D_trk7f")
 debug_color = Color(0, 0.6515895, 0.013452545, 0.41960785)
+
+[node name="RastroBoss" type="Line2D" parent="." unique_id=10998401]
+default_color = Color(0, 0.6627277, 1.540184e-06, 1)
+gradient = SubResource("Gradient_trk7f")
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="timeout" from="Timer2" to="." method="_on_timer_2_timeout"]
