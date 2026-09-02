@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://dot8iqit4shpu"]
+
+[ext_resource type="Script" uid="uid://c2x45cqhr44w7" path="res://GUI/scr_hud.gd" id="1_3am7f"]
+
+[node name="HUD" type="Control" unique_id=1353282040]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3am7f")
+
+[node name="Pontos" type="Label" parent="." unique_id=1072957765]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 13.0
+offset_right = 65.0
+offset_bottom = 36.0
+
+[node name="Multiplicador" type="Label" parent="." unique_id=787001602]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 42.0
+offset_right = 67.0
+offset_bottom = 65.0

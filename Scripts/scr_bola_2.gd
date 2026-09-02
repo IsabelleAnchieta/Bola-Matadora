@@ -3,6 +3,7 @@ extends CharacterBody2D
 @onready var PartImpc = $ParticulasImpacto
 @onready var Boom = $Timer
 
+@export var numeros_voadores: PackedScene
 @export var CenaRastro: PackedScene
 var rastre
 var rastro
@@ -57,12 +58,6 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		body.receber_impacto(self)
 
 
-
-func _on_area_2d_body_exited(body: Node2D) -> void:
-	if body.is_in_group("player"):
-		pass
-		
-		
 func atualizar_rastro():
 	pontos_rastro.push_front(global_position)
 
@@ -81,6 +76,11 @@ func _on_timer_timeout() -> void:
 
 func receber_impacto(bola):
 	rebater(bola.direcao, velocidade + 100)
+	if bola.posse:
+		var a = numeros_voadores.instantiate()
+		get_parent().add_child(a)
+		a.global_position = global_position
+		a.mostrar_pontos(Run.pontuar(250))
 
 	if bola.posse:
 		posse = true

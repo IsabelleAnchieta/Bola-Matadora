@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="Teste"
-run/main_scene="uid://cne4nd6efyyaq"
+run/main_scene="uid://dloauqyncx32p"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+Run="*uid://dh0r67kutbidm"
 
 [display]
 
@@ -30,6 +34,8 @@ enemies=""
 paredes=""
 escudo=""
 ParedeQ=""
+vida_boss=""
+boss=""
 
 [input]
 

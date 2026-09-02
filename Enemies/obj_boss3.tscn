@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dv3t1pepgr1yw"]
 
 [ext_resource type="Script" uid="uid://cc4l63415jbvk" path="res://Enemies/scr_bosses/scr_boss_3.gd" id="1_na4qw"]
+[ext_resource type="PackedScene" uid="uid://cfqnudh33slav" path="res://GUI/GUI_cena_pontos.tscn" id="2_c6lyw"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dobb0"]
 radius = 18.027756
@@ -26,17 +27,20 @@ color = Color(9.62615e-07, 0.75716144, 0.16338447, 1)
 [sub_resource type="Gradient" id="Gradient_na4qw"]
 colors = PackedColorArray(0, 1, 0, 1, 0, 1, 1, 0.582)
 
-[node name="CharacterBody2D" type="CharacterBody2D" unique_id=1399944755 groups=["enemies"]]
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=1399944755 groups=["boss", "enemies"]]
 collision_layer = 16
 collision_mask = 6
 script = ExtResource("1_na4qw")
+numeros_voadores = ExtResource("2_c6lyw")
+ID = "BossCorreria"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=271543012]
 shape = SubResource("CircleShape2D_dobb0")
 debug_color = Color(0.767227, 0.44490483, 0, 0.65882355)
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1745261366]
-collision_layer = 4
+collision_layer = 16
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1971655273]
 shape = SubResource("CircleShape2D_trk7f")

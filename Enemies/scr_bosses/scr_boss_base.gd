@@ -1,5 +1,11 @@
 extends CharacterBody2D
 
+@export var numeros_voadores : PackedScene
+@export var ID : String
+@export var vida = 5
+@export var Forca = 1000
+@export var WaitForAttack = 3.0
+
 @onready var rastro: Line2D = $RastroBoss
 @onready var target = get_parent().get_node("Player")
 @onready var vida_boss = get_parent().get_node("CanvasLayer/VidaBoss")
@@ -11,17 +17,20 @@ var pontos_rastro: Array[Vector2] = []
 var posicao_anterior: Vector2
 
 var dead = false
-@export var vida = 5
 var attacking = false
 var direcao = Vector2(1, 1).normalized()
 
-var velocidade = 300.0
+var velocidade = 0
+var dano = 5
 var desaceleracao = 100.0
 
+var avisar
 
 func _ready() -> void:
 	posicao_anterior = global_position
+	avisar = get_parent()
 	cooldown.start()
+	cooldown.wait_time = WaitForAttack
 
 
 func _physics_process(delta: float) -> void:
@@ -76,7 +85,7 @@ func attack() -> void:
 	var direction = global_position.direction_to(target.global_position)
 
 	direcao = direction
-	velocidade = 1000.0
+	velocidade = Forca
 	cooldown.start()
 
 
@@ -102,6 +111,8 @@ func atualizar_rastro() -> void:
 
 
 func death() -> void:
+	Run.derrotar_bosses(ID)
+	
 	deathtime.start()
 	dead = true
 	cooldown.stop()
@@ -112,25 +123,41 @@ func death() -> void:
 
 
 func _on_timer_2_timeout() -> void:
+	vida_boss.queue_free()
 	queue_free()
 
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		body.death()
-
+	if body.is_in_group("ParedeQ"):
+		if attacking:
+			body.receber_impacto(self)
+	if body.is_in_group("bola"):
+		receber_impacto(body)
 
 func receber_impacto(bola) -> void:
-	if !attacking and bola.posse:
-		rebater(bola.direcao, bola.velocidade)
-
-		bola.rebater(bola.direcao, bola.velocidade)
-
-		vida -= bola.dano
-		vida_boss.atualizar_vida(vida)
-		cooldown.start()
-
+	if bola.posse and !attacking:
+		efeito_pancada(bola, 1000)
+	elif bola.velocidade >= 1000:
+		efeito_pancada(bola, 1500)
 	else:
-		bola.rebater(bola.direcao, velocidade)
+		bola.rebater(direcao, velocidade)
+		rebater(-direcao, velocidade)
 		bola.posse = false
 		attacking = false
+
+func efeito_pancada(bola, pontos):
+	rebater(bola.direcao, bola.velocidade)
+
+	var a = numeros_voadores.instantiate()
+	get_parent().add_child(a)
+	a.global_position = global_position
+	a.mostrar_pontos(Run.pontuar(pontos))
+	Run.multiplicar(0.1)
+
+	bola.rebater(bola.direcao, bola.velocidade)
+
+	vida -= bola.dano
+	vida_boss.atualizar_vida(vida)
+	cooldown.start()

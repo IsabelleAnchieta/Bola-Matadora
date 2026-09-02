@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://cfqnudh33slav"]
+
+[ext_resource type="Script" uid="uid://c8gctj5q5qqbr" path="res://GUI/scr_pontuação.gd" id="1_ocoaj"]
+
+[node name="Label" type="Label" unique_id=158764934]
+offset_right = 40.0
+offset_bottom = 23.0
+script = ExtResource("1_ocoaj")

@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://c7w6fo5f3gwsa"]
+
+[ext_resource type="Script" uid="uid://dedhia54b26a1" path="res://scr_entrada.gd" id="1_qolsc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qolsc"]
+
+[node name="Node2D" type="Node2D" unique_id=1364803582]
+script = ExtResource("1_qolsc")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=307287372]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=2079681213]
+shape = SubResource("RectangleShape2D_qolsc")
+
+[node name="Timer" type="Timer" parent="." unique_id=183249849]
+process_mode = 3
+wait_time = 0.25
+one_shot = true
+
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

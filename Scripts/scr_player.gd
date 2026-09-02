@@ -1,7 +1,5 @@
 extends CharacterBody2D
 
-@export var Shoot : PackedScene
-
 @onready var Mira = $Taco/Mirando/Mira
 @onready var Cooldown = $Timer_Load
 @onready var WaitDash = $Timer_Dash
@@ -103,6 +101,7 @@ func _on_mirando_body_entered(body: Node2D) -> void:
 	if body.is_in_group("bola") and atacando:
 		var forca = clamp(velocidade_mouse * 0.1, 300.0, 1200.0)
 		var attack_direction = global_position.direction_to(get_global_mouse_position())
+		Run.multiplicar(0.1)
 		Camera.impacto(forca)
 		body.rebater(attack_direction, forca)
 		atacando = false

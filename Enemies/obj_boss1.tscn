@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dvoj76hk6iwmm"]
 
 [ext_resource type="Script" uid="uid://0lefnlm65dle" path="res://Enemies/scr_bosses/scr_boss_1.gd" id="1_trk7f"]
+[ext_resource type="PackedScene" uid="uid://cfqnudh33slav" path="res://GUI/GUI_cena_pontos.tscn" id="2_ocg6d"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dobb0"]
 radius = 31.016125
@@ -26,10 +27,13 @@ radius = 42.0119
 [sub_resource type="Gradient" id="Gradient_trk7f"]
 colors = PackedColorArray(0, 1, 0, 1, 0, 1, 1, 0.582)
 
-[node name="CharacterBody2D" type="CharacterBody2D" unique_id=1399944755 groups=["enemies"]]
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=1399944755 groups=["boss", "enemies"]]
 collision_layer = 16
 collision_mask = 6
 script = ExtResource("1_trk7f")
+numeros_voadores = ExtResource("2_ocg6d")
+ID = "BossBasico"
+vida = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=271543012]
 shape = SubResource("CircleShape2D_dobb0")
@@ -48,6 +52,8 @@ lifetime = 0.2
 process_material = SubResource("ParticleProcessMaterial_ocg6d")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1745261366]
+collision_layer = 16
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1971655273]
 shape = SubResource("CircleShape2D_trk7f")

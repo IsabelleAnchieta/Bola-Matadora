@@ -1,10 +1,13 @@
 extends Node2D
 
-@export var lugar : PackedScene
+@export var lugar : String
+@export var able = true
+@export var id_bosses : String
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	if id_bosses in Run.bosses_derrotados:
+		able = false
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -13,5 +16,7 @@ func _process(delta: float) -> void:
 
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
-	if body.is_in_group("player"):
-		get_tree().change_scene_to_packed(lugar)
+	if able:
+		if body.is_in_group("player"):
+			if lugar != null:
+				get_tree().change_scene_to_file(lugar)

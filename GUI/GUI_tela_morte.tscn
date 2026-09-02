@@ -52,5 +52,22 @@ size_flags_vertical = 4
 text = "Quit"
 icon_alignment = 1
 
+[node name="Centralize" type="CenterContainer" parent="VBoxContainer" unique_id=820689660]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Cont" type="VBoxContainer" parent="VBoxContainer/Centralize" unique_id=335061921]
+layout_direction = 3
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="VBoxContainer/Centralize/Cont" unique_id=1514605102]
+layout_mode = 2
+text = "Seu tempo:"
+
+[node name="Label3" type="Label" parent="VBoxContainer/Centralize/Cont" unique_id=1015617817]
+layout_mode = 2
+text = "Seu tempo:"
+
 [connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/Button2" to="." method="_on_button_2_pressed"]

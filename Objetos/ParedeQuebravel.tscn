@@ -1,14 +1,18 @@
 [gd_scene format=3 uid="uid://b6byl6blk3yj7"]
 
 [ext_resource type="Script" uid="uid://cssil3ogu2r3a" path="res://Scripts/scr_paredequebravel.gd" id="1_4tyjc"]
+[ext_resource type="PackedScene" uid="uid://cfqnudh33slav" path="res://GUI/GUI_cena_pontos.tscn" id="2_r8ho4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4tyjc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r8ho4"]
-size = Vector2(22, 22)
+size = Vector2(28, 28)
 
 [node name="StaticBody2D" type="StaticBody2D" unique_id=1526160338 groups=["ParedeQ"]]
+collision_layer = 5
+collision_mask = 17
 script = ExtResource("1_4tyjc")
+numeros_voadores = ExtResource("2_r8ho4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=950385413]
 shape = SubResource("RectangleShape2D_4tyjc")
