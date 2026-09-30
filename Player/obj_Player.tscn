@@ -1,13 +1,18 @@
 [gd_scene format=3 uid="uid://cpmajt36a5qvg"]
 
 [ext_resource type="Script" uid="uid://dm1l02m0v8bmq" path="res://Scripts/scr_player.gd" id="1_0q0wf"]
+[ext_resource type="Texture2D" uid="uid://cltgtysi07u86" path="res://Sprites/PenDrive.png" id="2_gj26n"]
 [ext_resource type="Script" uid="uid://dlr0p5tp3rko0" path="res://Scripts/scr_camera.gd" id="2_hxlgx"]
 [ext_resource type="Script" uid="uid://b75vwmcbaqbu3" path="res://Scripts/scr_taco.gd" id="3_kxxtb"]
+[ext_resource type="AudioStream" uid="uid://fk80ptogi1nh" path="res://Audio/Bass Impact.mp3" id="4_fjtdf"]
+[ext_resource type="Texture2D" uid="uid://wudh1yg4rbdi" path="res://Sprites/Batuta.png" id="4_gj26n"]
+[ext_resource type="AudioStream" uid="uid://bx2vbco8u4jdt" path="res://Audio/MetalBat.mp3" id="5_xhd6j"]
+[ext_resource type="AudioStream" uid="uid://cxp4n4x7qg8go" path="res://Audio/STOP.mp3" id="6_xhd6j"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hxlgx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hxlgx"]
-size = Vector2(52, 3)
+size = Vector2(52, 2.878366)
 
 [sub_resource type="QuadMesh" id="QuadMesh_kxxtb"]
 
@@ -28,24 +33,37 @@ color = Color(1, 1, 0, 1)
 colors = PackedColorArray(1, 1, 0, 1, 1, 1, 1, 0)
 
 [node name="Player" type="CharacterBody2D" unique_id=1725797651 groups=["player"]]
-collision_mask = 6
+collision_mask = 4
 script = ExtResource("1_0q0wf")
 
 [node name="Forma" type="CollisionShape2D" parent="." unique_id=1138811625]
 shape = SubResource("CircleShape2D_hxlgx")
+
+[node name="Sprite2D" type="Sprite2D" parent="Forma" unique_id=717352384]
+texture_filter = 1
+position = Vector2(1, 2)
+texture = ExtResource("2_gj26n")
 
 [node name="Taco" type="Node2D" parent="." unique_id=320351245]
 script = ExtResource("3_kxxtb")
 
 [node name="Mirando" type="Area2D" parent="Taco" unique_id=968742093]
 collision_layer = 8
-collision_mask = 2
+collision_mask = 18
 
 [node name="Mira" type="CollisionShape2D" parent="Taco/Mirando" unique_id=387815113]
-position = Vector2(-28, -0.5)
+position = Vector2(-28, -1.1920929e-07)
 scale = Vector2(1.0617452, 2.084516)
 shape = SubResource("RectangleShape2D_hxlgx")
 debug_color = Color(0.5720909, 0.5555277, 0.016805526, 0.41960785)
+
+[node name="Sprite2D" type="Sprite2D" parent="Taco/Mirando/Mira" unique_id=1142044934]
+texture_filter = 1
+texture_repeat = 1
+position = Vector2(-1.1092061e-07, 5.7187993e-08)
+rotation = -1.5707964
+scale = Vector2(0.71400833, -2.2686694)
+texture = ExtResource("4_gj26n")
 
 [node name="ParticulasImpacto" type="GPUParticles2D" parent="Taco" unique_id=610406646]
 emitting = false
@@ -67,13 +85,27 @@ one_shot = true
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=768134324]
 process_mode = 3
-zoom = Vector2(1.2, 1.2)
+zoom = Vector2(0.7, 0.7)
 position_smoothing_enabled = true
 script = ExtResource("2_hxlgx")
 
 [node name="RastroTaco" type="Line2D" parent="." unique_id=896412731]
 gradient = SubResource("Gradient_kxxtb")
 
+[node name="MakeSomeSound" type="AudioStreamPlayer2D" parent="." unique_id=284931002]
+stream = ExtResource("4_fjtdf")
+volume_db = -25.0
+pitch_scale = 2.0
+
+[node name="BaseBoll" type="AudioStreamPlayer2D" parent="." unique_id=1619977230]
+stream = ExtResource("5_xhd6j")
+volume_db = -15.0
+
+[node name="Stop" type="AudioStreamPlayer2D" parent="." unique_id=72974665]
+stream = ExtResource("6_xhd6j")
+volume_db = -30.0
+
+[connection signal="area_shape_entered" from="Taco/Mirando" to="." method="_on_mirando_area_shape_entered"]
 [connection signal="body_entered" from="Taco/Mirando" to="." method="_on_mirando_body_entered"]
 [connection signal="body_entered" from="Taco/Mirando" to="Taco/Mirando" method="_on_body_entered"]
 [connection signal="body_exited" from="Taco/Mirando" to="." method="_on_mirando_body_exited"]

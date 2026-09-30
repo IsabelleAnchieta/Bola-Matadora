@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://b7c84a338lfs0"]
+
+[ext_resource type="Texture2D" uid="uid://d1p0setjcdcga" path="res://Sprites/BolaMusical2.png" id="1_r3eds"]
+[ext_resource type="Script" uid="uid://cb8kfj2ol5d33" path="res://scr_ImpactLight.gd" id="2_r5egd"]
+
+[node name="Node2D" type="Node2D" unique_id=865185544]
+script = ExtResource("2_r5egd")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=337899939]
+modulate = Color(1, 1, 1, 0.093)
+light_mask = 63
+visibility_layer = 63
+texture_filter = 1
+texture = ExtResource("1_r3eds")

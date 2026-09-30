@@ -1,9 +1,9 @@
 extends Node2D
 
-@export var limUP : int = -750
-@export var limDown : int = 1000
-@export var limRight : int = 1750
-@export var limLeft : int = -250
+@export var limUP : int = -600
+@export var limDown : int = 850
+@export var limRight : int = 1600
+@export var limLeft : int = -100
 
 @onready var Camera = $Player/Camera2D
 @onready var Player = $Player
@@ -34,7 +34,7 @@ func _ready() -> void:
 	configurar_bosses()
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if Player.dead:
 		Run.finalizar_run()
 		

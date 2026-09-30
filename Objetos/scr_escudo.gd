@@ -1,13 +1,13 @@
 extends CharacterBody2D
 
+@onready var Boss = get_parent()
 
 func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
-	if body.is_in_group("player"):
-		body.death()
+	Boss._on_area_2d_body_entered(body)
 
 func receber_impacto(bola):
 	bola.posse = false

@@ -2,6 +2,8 @@
 
 [ext_resource type="Texture2D" uid="uid://0qbiwtccxdu5" path="res://Tiles/Tileset.png" id="1_mjrqp"]
 [ext_resource type="PackedScene" uid="uid://cpmajt36a5qvg" path="res://Player/obj_Player.tscn" id="2_60rg0"]
+[ext_resource type="PackedScene" uid="uid://f3fr70hx37n8" path="res://Objetos/obj_bola.tscn" id="4_60rg0"]
+[ext_resource type="AudioStream" uid="uid://dbvl23p7i6n7g" path="res://Audio/SoundTrack/Ironia.mp3" id="5_8p171"]
 [ext_resource type="PackedScene" uid="uid://djihiehacgd5p" path="res://Objetos/obj_pass.tscn" id="5_ckfaa"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_vmxjm"]
@@ -108,11 +110,11 @@ physics_layer_0/collision_layer = 4
 physics_layer_0/collision_mask = 3
 sources/0 = SubResource("TileSetAtlasSource_vmxjm")
 
-[sub_resource type="Gradient" id="Gradient_g1fjc"]
-colors = PackedColorArray(1, 0, 0, 1, 1, 0.29411766, 1, 0)
-
 [sub_resource type="Gradient" id="Gradient_1kfv5"]
 colors = PackedColorArray(0.14933985, 0.6444292, 3.85046e-07, 1, 2.2140146e-06, 0.53286433, 0.7753291, 0)
+
+[sub_resource type="Gradient" id="Gradient_ckfaa"]
+colors = PackedColorArray(0.82463527, 0.6643187, 7.70092e-07, 1, 1, 1, 1, 0.15300001)
 
 [node name="Primeira_Area" type="Node2D" unique_id=733324451]
 
@@ -122,11 +124,6 @@ tile_set = SubResource("TileSet_70t54")
 
 [node name="Player" parent="." unique_id=1725797651 instance=ExtResource("2_60rg0")]
 position = Vector2(66, 164)
-
-[node name="RastroBola" type="Line2D" parent="." unique_id=225226896]
-width = 8.0
-default_color = Color(1, 0, 0, 1)
-gradient = SubResource("Gradient_g1fjc")
 
 [node name="RastroBola2" type="Line2D" parent="." unique_id=331185536]
 width = 8.0
@@ -156,3 +153,20 @@ position = Vector2(-297.00006, 45.000015)
 scale = Vector2(3.9159365, 3.7395806)
 lugar = "res://Cenas/Arena3.tscn"
 id_bosses = "BossEscudo"
+
+[node name="CharacterBody2D" parent="." unique_id=357786640 instance=ExtResource("4_60rg0")]
+position = Vector2(-11, 45)
+
+[node name="MA" type="AudioStreamPlayer2D" parent="." unique_id=166725623]
+process_mode = 3
+stream = ExtResource("5_8p171")
+volume_db = -35.0
+pitch_scale = 2.0
+autoplay = true
+
+[node name="RastroBola" type="Line2D" parent="." unique_id=777727054]
+scale = Vector2(0.99906397, 0.9968451)
+points = PackedVector2Array(275, 211)
+width = 8.0
+default_color = Color(0.7100242, 0.5288167, 0, 1)
+gradient = SubResource("Gradient_ckfaa")

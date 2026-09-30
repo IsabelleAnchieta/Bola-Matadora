@@ -1,11 +1,36 @@
 [gd_scene format=3 uid="uid://f3fr70hx37n8"]
 
 [ext_resource type="Script" uid="uid://c5ivkqcxup04c" path="res://Scripts/scr_bola.gd" id="1_xptm7"]
+[ext_resource type="Texture2D" uid="uid://d1p0setjcdcga" path="res://Sprites/BolaMusical2.png" id="2_joidb"]
+[ext_resource type="PackedScene" uid="uid://b7c84a338lfs0" path="res://Objetos/obj_impactLight.tscn" id="2_s2afo"]
+[ext_resource type="Texture2D" uid="uid://bffctd1nbfv4e" path="res://Sprites/BolaMusical1.png" id="3_s2afo"]
+[ext_resource type="AudioStream" uid="uid://dqvpurldnnefa" path="res://Audio/Combo.mp3" id="4_jfo68"]
+[ext_resource type="AudioStream" uid="uid://di1o2u0blogcq" path="res://Audio/Pancadinha.mp3" id="4_ni2wd"]
+[ext_resource type="AudioStream" uid="uid://cqqltqr8p2wf1" path="res://Audio/VineBOOM.mp3" id="5_jfo68"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_er5oi"]
 radius = 18.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_04ycg"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_u6e34"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_joidb")
+}],
+"loop": true,
+"name": &"our",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_s2afo")
+}],
+"loop": true,
+"name": &"stop",
+"speed": 5.0
+}]
 
 [sub_resource type="QuadMesh" id="QuadMesh_ldi02"]
 
@@ -24,8 +49,9 @@ color = Color(0.40784314, 0, 0, 1)
 
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=357786640 groups=["bola"]]
 collision_layer = 2
-collision_mask = 31
+collision_mask = 14
 script = ExtResource("1_xptm7")
+Light = ExtResource("2_s2afo")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1513872978]
 collision_layer = 2
@@ -39,6 +65,11 @@ debug_color = Color(0.9666391, 0.1368505, 0.3192298, 0.41960785)
 shape = SubResource("CircleShape2D_04ycg")
 debug_color = Color(0.9675438, 0.14596155, 0.28174782, 0.41960785)
 
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CollisionShape2D" unique_id=317170001]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_u6e34")
+animation = &"our"
+
 [node name="ParticulasImpacto" type="GPUParticles2D" parent="." unique_id=24394094]
 emitting = false
 amount = 15
@@ -49,6 +80,18 @@ process_material = SubResource("ParticleProcessMaterial_ydw6k")
 [node name="Timer" type="Timer" parent="." unique_id=234542544]
 wait_time = 0.1
 one_shot = true
+
+[node name="VineBoom" type="AudioStreamPlayer2D" parent="." unique_id=139138959]
+stream = ExtResource("5_jfo68")
+volume_db = -25.0
+
+[node name="Combo" type="AudioStreamPlayer2D" parent="." unique_id=1100616923]
+stream = ExtResource("4_jfo68")
+volume_db = -25.0
+
+[node name="Pancadinha" type="AudioStreamPlayer2D" parent="." unique_id=356124792]
+stream = ExtResource("4_ni2wd")
+volume_db = -25.0
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

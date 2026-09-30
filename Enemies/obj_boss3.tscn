@@ -27,6 +27,9 @@ color = Color(9.62615e-07, 0.75716144, 0.16338447, 1)
 [sub_resource type="Gradient" id="Gradient_na4qw"]
 colors = PackedColorArray(0, 1, 0, 1, 0, 1, 1, 0.582)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_c6lyw"]
+radius = 22.0
+
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=1399944755 groups=["boss", "enemies"]]
 collision_layer = 16
 collision_mask = 6
@@ -62,6 +65,17 @@ process_material = SubResource("ParticleProcessMaterial_ocg6d")
 default_color = Color(0, 0.6627277, 1.540184e-06, 1)
 gradient = SubResource("Gradient_na4qw")
 
+[node name="Timer3" type="Timer" parent="." unique_id=745591857]
+
+[node name="At" type="Area2D" parent="." unique_id=357391155]
+collision_layer = 0
+collision_mask = 0
+
+[node name="ReadyForBad" type="CollisionShape2D" parent="At" unique_id=1251132064]
+shape = SubResource("CircleShape2D_c6lyw")
+debug_color = Color(0.91258764, 8.7020395e-05, 0.71682787, 0.65882355)
+
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="timeout" from="Timer2" to="." method="_on_timer_2_timeout"]
+[connection signal="timeout" from="Timer3" to="." method="_on_timer_3_timeout"]

@@ -3,16 +3,6 @@ extends Control
 @onready var tempo = $VBoxContainer/Centralize/Cont/Label2
 @onready var pontus = $VBoxContainer/Centralize/Cont/Label3
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
-
 func _on_button_pressed() -> void:
 	Run.start()
 	get_tree().reload_current_scene()

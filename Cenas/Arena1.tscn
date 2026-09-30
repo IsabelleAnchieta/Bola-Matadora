@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://b6byl6blk3yj7" path="res://Objetos/ParedeQuebravel.tscn" id="11_3c2nl"]
 [ext_resource type="PackedScene" uid="uid://c7w6fo5f3gwsa" path="res://Objetos/obj_entrada.tscn" id="11_c1xld"]
 [ext_resource type="PackedScene" uid="uid://djihiehacgd5p" path="res://Objetos/obj_pass.tscn" id="13_pw28c"]
+[ext_resource type="AudioStream" uid="uid://bhxabrlnu34m5" path="res://Audio/SoundTrack/Desejos.mp3" id="14_pw28c"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_g1fjc"]
 load_path = "res://.godot/imported/Tileset.png-ddd938920bed86b82a6219510447ed8c.ctex"
@@ -118,9 +119,6 @@ texture = SubResource("CompressedTexture2D_g1fjc")
 physics_layer_0/collision_layer = 4
 physics_layer_0/collision_mask = 3
 sources/0 = SubResource("TileSetAtlasSource_mjnik")
-
-[sub_resource type="Gradient" id="Gradient_g1fjc"]
-colors = PackedColorArray(1, 0, 0, 1, 1, 0.29411766, 1, 0)
 
 [sub_resource type="Gradient" id="Gradient_1kfv5"]
 colors = PackedColorArray(0.14933985, 0.6444292, 3.85046e-07, 1, 2.2140146e-06, 0.53286433, 0.7753291, 0)
@@ -268,8 +266,12 @@ _data = {
 &"skip_entrada": SubResource("Animation_3c2nl")
 }
 
+[sub_resource type="Gradient" id="Gradient_pw28c"]
+colors = PackedColorArray(0.82463527, 0.6643187, 7.70092e-07, 1, 1, 1, 1, 0.15300001)
+
 [node name="Cena 1" type="Node2D" unique_id=1184654704]
 script = ExtResource("1_1kfv5")
+limRight = 1500
 
 [node name="PularScena" type="Node2D" parent="." unique_id=1427479902]
 process_mode = 3
@@ -282,17 +284,10 @@ tile_set = SubResource("TileSet_ln4ob")
 
 [node name="Player" parent="." unique_id=1725797651 instance=ExtResource("2_owwqi")]
 position = Vector2(688, 675)
-collision_layer = 7
 
 [node name="Bola" parent="." unique_id=357786640 instance=ExtResource("3_g1fjc")]
 visible = false
 position = Vector2(684, 438)
-
-[node name="RastroBola" type="Line2D" parent="." unique_id=380006796]
-points = PackedVector2Array(275, 211)
-width = 8.0
-default_color = Color(1, 0, 0, 1)
-gradient = SubResource("Gradient_g1fjc")
 
 [node name="RastroBola2" type="Line2D" parent="." unique_id=1033044305]
 width = 8.0
@@ -318,7 +313,6 @@ visible = false
 
 [node name="CharacterBody2D3" parent="." unique_id=1190367867 instance=ExtResource("7_g8xua")]
 position = Vector2(691, -8)
-Forca = 700
 WaitForAttack = 5.0
 
 [node name="ParedeEntrada" parent="." unique_id=1890404244 instance=ExtResource("10_au603")]
@@ -326,8 +320,8 @@ position = Vector2(537, 554)
 scale = Vector2(7.5399566, 1.2259641)
 
 [node name="Node2D" parent="." unique_id=1364803582 instance=ExtResource("11_c1xld")]
-position = Vector2(684, 528)
-scale = Vector2(-6.977482, 0.9618832)
+position = Vector2(687, 643.00006)
+scale = Vector2(-7.1571207, 10.727159)
 
 [node name="CameraFake" type="Node2D" parent="." unique_id=1309653038]
 position = Vector2(688, 675)
@@ -373,6 +367,20 @@ position = Vector2(684, 710)
 scale = Vector2(7.139305, 3.6361306)
 lugar = "res://Cenas/primeira_area.tscn"
 able = false
+
+[node name="MA" type="AudioStreamPlayer2D" parent="." unique_id=308886120]
+process_mode = 3
+stream = ExtResource("14_pw28c")
+volume_db = -35.0
+pitch_scale = 2.0
+autoplay = true
+
+[node name="RastroBola" type="Line2D" parent="." unique_id=1353045649]
+scale = Vector2(0.99906397, 0.9968451)
+points = PackedVector2Array(275, 211)
+width = 8.0
+default_color = Color(0.7100242, 0.5288167, 0, 1)
+gradient = SubResource("Gradient_pw28c")
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="animation_finished" from="AnimationPlayer" to="PularScena" method="_on_animation_player_animation_finished"]

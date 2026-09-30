@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://fk80ptogi1nh"
+path="res://.godot/imported/Bass Impact.mp3-81af4ac9a18420840a3cc90c848b1bc2.mp3str"
+
+[deps]
+
+source_file="res://Audio/Bass Impact.mp3"
+dest_files=["res://.godot/imported/Bass Impact.mp3-81af4ac9a18420840a3cc90c848b1bc2.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0.0
+bpm=120.0
+beat_count=2
+bar_beats=4

@@ -10,11 +10,6 @@ func _ready() -> void:
 	Camera = get_parent().get_node("Player/Camera2D")
 	Anim = get_parent().get_node("AnimationPlayer")
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
@@ -26,7 +21,3 @@ func pular_cutscene() -> void:
 		CameraCutscene.enabled = false
 		Camera.enabled = true
 		Anim.play("skip_entrada")
-
-
-func _on_animation_player_animation_finished(anim_name: StringName) -> void:
-	pass # Replace with function body.

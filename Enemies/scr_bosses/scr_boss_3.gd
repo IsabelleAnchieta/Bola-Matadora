@@ -9,12 +9,11 @@ func _ready() -> void:
 
 
 func _on_timer_timeout() -> void:
-	attack()
 	imcounting = count
-	attacking = true
+	super._on_timer_timeout()
 
 
-func quando_bater_na_parede(objeto) -> void:
+func quando_bater_na_parede() -> void:
 	imcounting -= 1
 	
 	if imcounting <= 0:

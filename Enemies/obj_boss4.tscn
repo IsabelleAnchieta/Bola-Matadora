@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://cfqnudh33slav" path="res://GUI/GUI_cena_pontos.tscn" id="3_3ff6c"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dobb0"]
-radius = 18.027756
+radius = 17.0
 
 [sub_resource type="QuadMesh" id="QuadMesh_kxxtb"]
 
@@ -23,18 +23,22 @@ gravity = Vector3(0, 0, 0)
 color = Color(9.62615e-07, 0.75716144, 0.16338447, 1)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_trk7f"]
-radius = 22.022715
+radius = 23.0
 
 [sub_resource type="Gradient" id="Gradient_rto83"]
 colors = PackedColorArray(0, 1, 0, 1, 0, 1, 1, 0.582)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_3ff6c"]
+radius = 23.194826
+
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=1399944755 groups=["boss", "enemies"]]
 collision_layer = 16
-collision_mask = 6
+collision_mask = 4
 script = ExtResource("1_nom0o")
 Projetil = ExtResource("2_rto83")
 numeros_voadores = ExtResource("3_3ff6c")
 ID = "BossAtirador"
+WaitForAttack = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=271543012]
 shape = SubResource("CircleShape2D_dobb0")
@@ -53,16 +57,26 @@ process_material = SubResource("ParticleProcessMaterial_ocg6d")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1745261366]
 collision_layer = 16
-collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1971655273]
 shape = SubResource("CircleShape2D_trk7f")
-debug_color = Color(0, 0.6515895, 0.013452545, 0.41960785)
+debug_color = Color(0, 0.6509804, 0.011764706, 0.41960785)
 
 [node name="RastroBoss" type="Line2D" parent="." unique_id=1789147850]
 default_color = Color(0, 0.6627277, 1.540184e-06, 1)
 gradient = SubResource("Gradient_rto83")
 
+[node name="Timer3" type="Timer" parent="." unique_id=1410657602]
+
+[node name="At" type="Area2D" parent="." unique_id=504341779]
+collision_layer = 0
+collision_mask = 0
+
+[node name="ReadyForBad" type="CollisionShape2D" parent="At" unique_id=1163479700]
+shape = SubResource("CircleShape2D_3ff6c")
+debug_color = Color(0.91258764, 8.7020395e-05, 0.71682787, 0.65882355)
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="timeout" from="Timer2" to="." method="_on_timer_2_timeout"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="timeout" from="Timer3" to="." method="_on_timer_3_timeout"]
