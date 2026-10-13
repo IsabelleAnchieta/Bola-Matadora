@@ -101,7 +101,8 @@ func _physics_process(delta: float) -> void:
 		mira_anterior = Mira.global_position
 		
 		Mira.global_position = global_position + look * 40
-		$Forma/Sprite2D.rotation = Mira.rotation
+		if !parrying:
+			$Forma/Sprite2D.rotation = Mira.rotation
 		Mira.look_at(mousepos)
 		
 		

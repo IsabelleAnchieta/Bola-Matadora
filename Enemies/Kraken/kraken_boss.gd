@@ -52,7 +52,7 @@ func instanciar_tentaculo():
 	var novo_tentaculo = tentaculo.instantiate()
 
 	# Sorteia um dos três ataques implementados.
-	novo_tentaculo.tipo = randi_range(0, 2)
+	novo_tentaculo.tipo = randi_range(0, 3)
 
 	# Adiciona o tentáculo à cena antes de definir a posição global.
 	get_parent().add_child(novo_tentaculo)
@@ -149,8 +149,13 @@ func death(bola = null) -> void:
 
 	queue_free()
 
+
 func receber_impacto(bola) -> void:
 	bola.rebater(-bola.direcao, 1000)
+
+	if protected:
+		bola.posse = false
+
 
 
 func _on_area_2d_body_entered(body: Node2D) -> void:

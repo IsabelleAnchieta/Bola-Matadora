@@ -24,6 +24,7 @@ enum TipoTentaculo {
 # Ataques
 @export var projetil_rocha: PackedScene
 @export var cena_raio: PackedScene
+@export var numeros_voadores: PackedScene
 
 # Tempos
 @export var tempo_preparacao: float = 0.8
@@ -58,11 +59,13 @@ var foi_derrotado: bool = false
 var jogador_atingido: bool = false
 
 var posicao_ataque: Vector2
+var posicao_barragem: Vector2
 var posicao_jogador: Vector2
 
 var marcador: Line2D
 var indicador_raio: Line2D
-
+var onda_barragem: Line2D
+var jogador_atingido_barragem: bool = false
 
 func _ready() -> void:
 	alvo = get_parent().get_node("Player")
@@ -71,6 +74,7 @@ func _ready() -> void:
 
 func iniciar_ciclo() -> void:
 	ciclo_tentaculo()
+
 
 
 func ciclo_tentaculo() -> void:
@@ -93,11 +97,16 @@ func ciclo_tentaculo() -> void:
 			+ alvo.velocity * distancia_previsao
 		)
 
+		if tipo == TipoTentaculo.BARRAGEM:
+			posicao_barragem = global_position
+
 		match tipo:
 			TipoTentaculo.ESMAGAMENTO:
 				criar_marcador()
 			TipoTentaculo.RAIO:
 				criar_marcador_raio()
+			TipoTentaculo.BARRAGEM:
+				criar_marcador_barragem()
 
 		var arvore := get_tree()
 		if arvore == null:
@@ -110,6 +119,7 @@ func ciclo_tentaculo() -> void:
 
 		estado_atual = Estado.ATACANDO
 		atualizar_colisoes(true, false)
+		remover_marcador()
 
 		match tipo:
 			TipoTentaculo.ESMAGAMENTO:
@@ -118,8 +128,34 @@ func ciclo_tentaculo() -> void:
 				executar_rocha()
 			TipoTentaculo.RAIO:
 				await executar_raio()
+
 			TipoTentaculo.BARRAGEM:
-				pass
+				for i in range(5):
+					if foi_derrotado or not is_inside_tree():
+						return
+
+					if i > 0:
+						posicao_barragem = escolher_posicao_ataque()
+						criar_marcador_barragem()
+
+						await get_tree().create_timer(
+							aviso_entre_jatadas, false
+						).timeout
+
+						if foi_derrotado or not is_inside_tree():
+							return
+
+						remover_marcador()
+
+					jogador_atingido_barragem = false
+
+					await executar_barragem()
+
+					if foi_derrotado or not is_inside_tree():
+						return
+
+					await criar_onda_barragem()
+
 
 		if foi_derrotado or not is_inside_tree():
 			return
@@ -145,6 +181,7 @@ func ciclo_tentaculo() -> void:
 		).timeout
 
 
+
 # TEMPORÁRIO: será conectado a LimitesTentaculos.
 
 func escolher_posicao_ataque() -> Vector2:
@@ -156,7 +193,8 @@ func escolher_posicao_ataque() -> Vector2:
 	var x_max := limites.end.x - margem
 	var y_max := limites.end.y - margem
 
-	if tipo == TipoTentaculo.ROCHA:
+
+	if tipo == TipoTentaculo.ROCHA or tipo == TipoTentaculo.BARRAGEM:
 		return Vector2(
 			randf_range(x_min, x_max),
 			randf_range(y_min, y_max)
@@ -200,6 +238,15 @@ func mover_submerso(destino: Vector2) -> void:
 		var direcao := global_position.direction_to(destino)
 		velocity = direcao * velocidade_submerso
 		move_and_slide()
+		
+
+		for i in get_slide_collision_count():
+			var colisao = get_slide_collision(i)
+			var corpo = colisao.get_collider()
+
+			if corpo.is_in_group("ParedeQ"):
+				corpo.queue_free()
+
 
 		await arvore.physics_frame
 
@@ -324,6 +371,14 @@ func executar_esmagamento() -> void:
 		var direcao := global_position.direction_to(posicao_jogador)
 		velocity = direcao * velocidade_ataque
 		move_and_slide()
+		
+		for i in get_slide_collision_count():
+			var colisao = get_slide_collision(i)
+			var corpo = colisao.get_collider()
+
+			if corpo.is_in_group("ParedeQ"):
+				corpo.queue_free()
+		
 		verificar_dano_jogador()
 
 		await arvore.physics_frame
@@ -360,11 +415,25 @@ func afundar() -> void:
 	queue_free()
 
 
+
 func receber_impacto(bola) -> void:
 	bola.rebater(-bola.direcao, 1000)
 
-	if pode_receber_dano:
+	if estado_atual == Estado.ATACANDO:
+		bola.posse = false
+
+	if numeros_voadores != null:
+		var efeito = numeros_voadores.instantiate()
+		get_parent().add_child(efeito)
+		efeito.global_position = global_position
+
+		efeito.mostrar_pontos(Run.pontuar(bola.pontos))
+	else:
+		Run.pontuar(bola.pontos)
+
+	if pode_receber_dano and bola.posse:
 		afundar()
+
 
 
 func atualizar_colisoes(
@@ -488,3 +557,151 @@ func obter_limites_arena() -> Rect2:
 	var centro: Vector2 = limites_tentaculos.get_node("CollisionShape2D").global_position
 
 	return Rect2(centro - extensao, extensao * 2.0)
+
+
+
+func criar_marcador_barragem() -> void:
+	remover_marcador()
+
+	marcador = Line2D.new()
+	marcador.name = "MarcadorBarragem"
+	marcador.width = 3.0
+	marcador.default_color = Color(0.2, 0.75, 1.0, 0.9)
+	marcador.closed = true
+	marcador.z_index = 10
+
+	var raio := 70.0
+	var segmentos := 48
+
+	for i in range(segmentos):
+		var angulo := TAU * float(i) / float(segmentos)
+		marcador.add_point(
+			Vector2(cos(angulo), sin(angulo)) * raio
+		)
+
+	get_parent().add_child(marcador)
+	marcador.global_position = posicao_barragem
+
+	var tween := marcador.create_tween()
+	tween.set_loops()
+	tween.tween_property(marcador, "width", 6.0, 0.25)
+	tween.tween_property(marcador, "width", 2.0, 0.25)
+
+
+
+
+func executar_barragem() -> void:
+	var arvore := get_tree()
+
+	if arvore == null or not is_inside_tree() or foi_derrotado:
+		return
+
+	jogador_atingido = false
+
+	# O tentáculo fica submerso durante a viagem.
+	atualizar_colisoes(false, false)
+
+	while global_position.distance_to(posicao_barragem) > 12.0:
+		if foi_derrotado or not is_inside_tree():
+			return
+
+		while arvore.paused:
+			await arvore.process_frame
+
+			if foi_derrotado or not is_inside_tree():
+				return
+
+		var direcao := global_position.direction_to(posicao_barragem)
+		velocity = direcao * velocidade_ataque
+		move_and_slide()
+
+		for i in get_slide_collision_count():
+			var colisao = get_slide_collision(i)
+			var corpo = colisao.get_collider()
+
+			if corpo.is_in_group("ParedeQ"):
+				corpo.queue_free()
+
+		await arvore.physics_frame
+
+		if foi_derrotado or not is_inside_tree():
+			return
+
+	velocity = Vector2.ZERO
+
+	# O tentáculo emerge ao chegar ao ponto de impacto.
+	atualizar_colisoes(true, false)
+
+
+
+func criar_onda_barragem() -> void:
+	var arvore := get_tree()
+	if arvore == null or not is_inside_tree():
+		return
+
+	onda_barragem = Line2D.new()
+	onda_barragem.name = "OndaBarragem"
+	onda_barragem.width = 8.0
+	onda_barragem.default_color = Color(0.2, 0.75, 1.0, 0.9)
+	onda_barragem.closed = true
+	onda_barragem.z_index = 11
+
+	var segmentos := 64
+	for i in range(segmentos):
+		var angulo := TAU * float(i) / float(segmentos)
+		onda_barragem.add_point(Vector2(cos(angulo), sin(angulo)) * 5.0)
+
+	get_parent().add_child(onda_barragem)
+	onda_barragem.global_position = posicao_barragem
+
+	var duracao := 0.7
+	var raio_maximo := 220.0
+
+
+	var tween := onda_barragem.create_tween()
+
+	tween.tween_method(
+		func(raio: float) -> void:
+			if not is_instance_valid(onda_barragem):
+				return
+
+			for i in range(segmentos):
+				var angulo := TAU * float(i) / float(segmentos)
+				var ponto := Vector2(cos(angulo), sin(angulo)) * raio
+				onda_barragem.set_point_position(i, ponto)
+
+			verificar_impacto_onda(raio),
+		5.0,
+		raio_maximo,
+		duracao
+	)
+
+
+	tween.parallel().tween_property(
+		onda_barragem,
+		"modulate:a",
+		0.0,
+		duracao
+	)
+
+	await tween.finished
+
+	if is_instance_valid(onda_barragem):
+		onda_barragem.queue_free()
+
+	onda_barragem = null
+
+
+
+func verificar_impacto_onda(raio_atual: float) -> void:
+	if jogador_atingido_barragem:
+		return
+
+	if not is_instance_valid(alvo):
+		return
+
+	var distancia := posicao_barragem.distance_to(alvo.global_position)
+
+	if distancia <= raio_atual:
+		jogador_atingido_barragem = true
+		alvo.death()

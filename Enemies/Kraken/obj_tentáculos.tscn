@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://dlwsjomusroes" path="res://Enemies/Kraken/scr_AreaTentac.gd" id="2_7ly60"]
 [ext_resource type="PackedScene" uid="uid://3j6by2f4sppq" path="res://Enemies/Kraken/obj_ProjetilRocha.tscn" id="2_cssl1"]
 [ext_resource type="PackedScene" uid="uid://dor8u6sl5b7rr" path="res://Enemies/Kraken/obj_raiodeagua.tscn" id="3_y6li5"]
+[ext_resource type="PackedScene" uid="uid://cfqnudh33slav" path="res://GUI/GUI_cena_pontos.tscn" id="4_a0mcy"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_7ly60"]
 radius = 45.0
@@ -19,6 +20,7 @@ collision_mask = 3
 script = ExtResource("1_veo7e")
 projetil_rocha = ExtResource("2_cssl1")
 cena_raio = ExtResource("3_y6li5")
+numeros_voadores = ExtResource("4_a0mcy")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1797654231]
 shape = SubResource("CircleShape2D_7ly60")

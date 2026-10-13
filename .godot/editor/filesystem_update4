@@ -20,3 +20,6 @@ res://Cenas/Arena1.tscn
 res://Cenas/scr_arena_base.gd
 res://Enemies/Kraken/kraken_boss.gd
 res://Enemies/Kraken/KrakenBoss.tscn
+res://Enemies/Kraken/scr_hitboxArea.gd
+res://Objetos/ParedeQuebravel.tscn
+res://Scripts/scr_paredequebravel.gd

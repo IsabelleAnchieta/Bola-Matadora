@@ -13,8 +13,7 @@ func _process(delta: float) -> void:
 
 
 func _on_body_entered(body: Node2D) -> void:
-	if body.is_in_group("bola") and $CollisionShape2D.disabled == false:
-		print("BBBB")
+	if body.is_in_group("bola") and $CollisionShape2D.disabled == false and body.posse:
 		get_parent().hurted(body.dano)
 		efeito_pancada(body, body.pontos)
 		$CollisionShape2D.disabled = true
