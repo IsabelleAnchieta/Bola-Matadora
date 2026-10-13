@@ -1,6 +1,8 @@
 res://Objetos/
+res://Scripts/
+res://Enemies/obj_TRUEBOSSES/
+res://Enemies/scr_TRUEBOSSES/
 res://Cenas/
 res://GUI/
 res://Enemies/
-res://Scripts/
 res://Player/

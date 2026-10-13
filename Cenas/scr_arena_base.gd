@@ -3,7 +3,7 @@ extends Node2D
 @export var limUP : int = -600
 @export var limDown : int = 850
 @export var limRight : int = 1600
-@export var limLeft : int = -100
+@export var limLeft : int = -220
 
 @onready var Camera = $Player/Camera2D
 @onready var Player = $Player

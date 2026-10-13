@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://bqhxhk5fk4874" path="res://GUI/GUI_BossLifeBar.tscn" id="5_kvri4"]
 [ext_resource type="PackedScene" uid="uid://dohmajk8ebdym" path="res://GUI/GUI_tela_morte.tscn" id="6_hvmh0"]
 [ext_resource type="PackedScene" uid="uid://bpxelsvgfdoot" path="res://GUI/GUI_pause.tscn" id="7_fx08t"]
-[ext_resource type="PackedScene" uid="uid://dvoj76hk6iwmm" path="res://Enemies/obj_boss1.tscn" id="8_r7p24"]
+[ext_resource type="PackedScene" uid="uid://dvoj76hk6iwmm" path="res://Enemies/obj_bosses/obj_boss1.tscn" id="8_r7p24"]
 [ext_resource type="PackedScene" uid="uid://bhrkxbqocahdl" path="res://Objetos/obj_paredeentrada.tscn" id="9_58w3k"]
 [ext_resource type="PackedScene" uid="uid://c7w6fo5f3gwsa" path="res://Objetos/obj_entrada.tscn" id="10_0yu44"]
 

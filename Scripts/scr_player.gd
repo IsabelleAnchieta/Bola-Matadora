@@ -262,3 +262,11 @@ func parry():
 	if recuperacao_parry <= 0:
 		parrying = true
 		tempo_parry = duracao_parry
+
+
+func _on_mirando_area_shape_entered(area_rid: RID, area: Area2D, area_shape_index: int, local_shape_index: int) -> void:
+	if not parrying:
+		return
+	if area.has_method("receber_parry"):
+		area.receber_parry()
+		$Stop.play()

@@ -11,7 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://bhrkxbqocahdl" path="res://Objetos/obj_paredeentrada.tscn" id="8_uautl"]
 [ext_resource type="PackedScene" uid="uid://c7w6fo5f3gwsa" path="res://Objetos/obj_entrada.tscn" id="9_d8bdu"]
 [ext_resource type="PackedScene" uid="uid://djihiehacgd5p" path="res://Objetos/obj_pass.tscn" id="10_its8y"]
-[ext_resource type="PackedScene" uid="uid://ew271owtja0p" path="res://Enemies/obj_boss4.tscn" id="12_ovp5d"]
+[ext_resource type="PackedScene" uid="uid://ew271owtja0p" path="res://Enemies/obj_bosses/obj_boss4.tscn" id="12_ovp5d"]
 [ext_resource type="AudioStream" uid="uid://ck3lxy5ei6gaa" path="res://Audio/SoundTrack/PAssada.mp3" id="13_xsnno"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_g1fjc"]

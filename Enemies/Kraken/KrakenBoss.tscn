@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://t6tgha6i5m5v"]
+
+[ext_resource type="Script" uid="uid://cfcilf705hafx" path="res://Enemies/Kraken/kraken_boss.gd" id="1_dwpon"]
+[ext_resource type="Script" uid="uid://cvj2bmc41eyc7" path="res://Enemies/Kraken/scr_hitboxArea.gd" id="2_6k0ed"]
+[ext_resource type="PackedScene" uid="uid://cfqnudh33slav" path="res://GUI/GUI_cena_pontos.tscn" id="2_eld25"]
+[ext_resource type="PackedScene" uid="uid://0hq2lo27c50d" path="res://Enemies/Kraken/obj_tentáculos.tscn" id="2_qdmov"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6k0ed"]
+radius = 25.019993
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_eld25"]
+radius = 35.014282
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dwpon"]
+radius = 55.00909
+
+[node name="KrakenBoss" type="CharacterBody2D" unique_id=1739257033 groups=["boss", "enemies"]]
+collision_layer = 16
+collision_mask = 6
+script = ExtResource("1_dwpon")
+tentaculo = ExtResource("2_qdmov")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1307582921]
+shape = SubResource("CircleShape2D_6k0ed")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1084318065]
+collision_layer = 16
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1836386308]
+shape = SubResource("CircleShape2D_eld25")
+
+[node name="Area2D2" type="Area2D" parent="." unique_id=2043648183 groups=["boss", "enemies"]]
+collision_layer = 16
+collision_mask = 6
+script = ExtResource("2_6k0ed")
+numeros_voadores = ExtResource("2_eld25")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2" unique_id=144325995]
+position = Vector2(0, 23)
+shape = SubResource("CircleShape2D_dwpon")
+debug_color = Color(0.9882937, 0.024427367, 0.28153622, 0.41960785)
+
+[node name="Timer" type="Timer" parent="." unique_id=427888043]
+wait_time = 5.0
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_entered" from="Area2D2" to="Area2D2" method="_on_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

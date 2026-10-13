@@ -11,8 +11,8 @@
 [ext_resource type="PackedScene" uid="uid://bhrkxbqocahdl" path="res://Objetos/obj_paredeentrada.tscn" id="8_mxnpe"]
 [ext_resource type="PackedScene" uid="uid://c7w6fo5f3gwsa" path="res://Objetos/obj_entrada.tscn" id="9_n3g8r"]
 [ext_resource type="PackedScene" uid="uid://djihiehacgd5p" path="res://Objetos/obj_pass.tscn" id="11_tm5p7"]
-[ext_resource type="PackedScene" uid="uid://ch3iag1u5m4kh" path="res://Enemies/obj_boss2.tscn" id="12_6qsc6"]
 [ext_resource type="AudioStream" uid="uid://bex3c7igmeu2h" path="res://Audio/SoundTrack/Atração.mp3" id="13_6qsc6"]
+[ext_resource type="PackedScene" uid="uid://t6tgha6i5m5v" path="res://Enemies/Kraken/KrakenBoss.tscn" id="13_50get"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_g1fjc"]
 load_path = "res://.godot/imported/Tileset.png-ddd938920bed86b82a6219510447ed8c.ctex"
@@ -332,10 +332,6 @@ scale = Vector2(6.9959283, 3.975142)
 lugar = "res://Cenas/primeira_area.tscn"
 able = false
 
-[node name="CharacterBody2D" parent="." unique_id=1399944755 instance=ExtResource("12_6qsc6")]
-position = Vector2(759, 541)
-WaitForAttack = 5.0
-
 [node name="MA" type="AudioStreamPlayer2D" parent="." unique_id=1167301996]
 process_mode = 3
 stream = ExtResource("13_6qsc6")
@@ -349,6 +345,9 @@ points = PackedVector2Array(275, 211)
 width = 8.0
 default_color = Color(0.7100242, 0.5288167, 0, 1)
 gradient = SubResource("Gradient_6qsc6")
+
+[node name="KrakenBoss" parent="." unique_id=1739257033 instance=ExtResource("13_50get")]
+position = Vector2(445, 82)
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="animation_finished" from="AnimationPlayer" to="PularScena" method="_on_animation_player_animation_finished"]

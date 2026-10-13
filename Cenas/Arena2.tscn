@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://dohmajk8ebdym" path="res://GUI/GUI_tela_morte.tscn" id="6_5tjxi"]
 [ext_resource type="PackedScene" uid="uid://bpxelsvgfdoot" path="res://GUI/GUI_pause.tscn" id="7_tfqmw"]
 [ext_resource type="PackedScene" uid="uid://bhrkxbqocahdl" path="res://Objetos/obj_paredeentrada.tscn" id="10_tfqmw"]
-[ext_resource type="PackedScene" uid="uid://dv3t1pepgr1yw" path="res://Enemies/obj_boss3.tscn" id="11_1def2"]
+[ext_resource type="PackedScene" uid="uid://dv3t1pepgr1yw" path="res://Enemies/obj_bosses/obj_boss3.tscn" id="11_1def2"]
 [ext_resource type="PackedScene" uid="uid://c7w6fo5f3gwsa" path="res://Objetos/obj_entrada.tscn" id="11_8srbl"]
 [ext_resource type="PackedScene" uid="uid://djihiehacgd5p" path="res://Objetos/obj_pass.tscn" id="12_5tjxi"]
 [ext_resource type="AudioStream" uid="uid://bwgtak0yfft0x" path="res://Audio/SoundTrack/Radioativo.mp3" id="13_tfqmw"]

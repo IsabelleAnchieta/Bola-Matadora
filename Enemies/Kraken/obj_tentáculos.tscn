@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://0hq2lo27c50d"]
+
+[ext_resource type="Script" uid="uid://cml66qcax2gew" path="res://Enemies/Kraken/scr_tentáculo.gd" id="1_veo7e"]
+[ext_resource type="Script" uid="uid://dlwsjomusroes" path="res://Enemies/Kraken/scr_AreaTentac.gd" id="2_7ly60"]
+[ext_resource type="PackedScene" uid="uid://3j6by2f4sppq" path="res://Enemies/Kraken/obj_ProjetilRocha.tscn" id="2_cssl1"]
+[ext_resource type="PackedScene" uid="uid://dor8u6sl5b7rr" path="res://Enemies/Kraken/obj_raiodeagua.tscn" id="3_y6li5"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7ly60"]
+radius = 45.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_veo7e"]
+size = Vector2(96.5, 78)
+
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=493101512]
+process_mode = 1
+scale = Vector2(0.48610768, 0.4593949)
+collision_layer = 48
+collision_mask = 3
+script = ExtResource("1_veo7e")
+projetil_rocha = ExtResource("2_cssl1")
+cena_raio = ExtResource("3_y6li5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1797654231]
+shape = SubResource("CircleShape2D_7ly60")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=2137149124]
+collision_layer = 16
+collision_mask = 3
+script = ExtResource("2_7ly60")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=270535237]
+scale = Vector2(1.0303886, 1.3171408)
+shape = SubResource("RectangleShape2D_veo7e")
