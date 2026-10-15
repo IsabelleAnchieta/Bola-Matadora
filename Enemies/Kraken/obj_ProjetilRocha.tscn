@@ -1,8 +1,64 @@
 [gd_scene format=3 uid="uid://3j6by2f4sppq"]
 
 [ext_resource type="Script" uid="uid://bh5udfet7wq1p" path="res://Enemies/Kraken/scr_projetil_rocha.gd" id="1_4x4y7"]
+[ext_resource type="Texture2D" uid="uid://4famob30e8s5" path="res://Sprites/Kraken/SATA/SataShoot1.png" id="2_5xd18"]
+[ext_resource type="Texture2D" uid="uid://w0rx07phh3ur" path="res://Sprites/Kraken/SATA/SataShoot2.png" id="3_151lb"]
+[ext_resource type="Texture2D" uid="uid://blw7balwfvg8j" path="res://Sprites/Kraken/SATA/SataShoot3.png" id="4_fcn8c"]
+[ext_resource type="Texture2D" uid="uid://casoa5cltjcu6" path="res://Sprites/Kraken/SATA/SataShootDye1.png" id="5_fcn8c"]
+[ext_resource type="Texture2D" uid="uid://wwynqcyxg47d" path="res://Sprites/Kraken/SATA/SataShootDye2.png" id="6_2n87y"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_krl8w"]
+radius = 5.007087
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2n87y"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_5xd18")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_151lb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_fcn8c")
+}],
+"loop": true,
+"name": &"default",
+"speed": 15.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_fcn8c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_2n87y")
+}],
+"loop": false,
+"name": &"die",
+"speed": 15.0
+}]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_fcn8c"]
+
+[sub_resource type="MeshTexture" id="MeshTexture_fcn8c"]
+mesh = SubResource("PlaneMesh_fcn8c")
+image_size = Vector2(6, 6)
+
+[sub_resource type="Gradient" id="Gradient_2n87y"]
+colors = PackedColorArray(0.87028795, 0.00029070972, 0.79375434, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_2n87y"]
+gradient = SubResource("Gradient_2n87y")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ui18q"]
+lifetime_randomness = 0.4
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 50.0
+initial_velocity_max = 100.0
+gravity = Vector3(0, 98, 0)
+color = Color(1, 0, 1, 1)
+color_ramp = SubResource("GradientTexture1D_2n87y")
 
 [node name="Area2D" type="Area2D" unique_id=339461366]
 scale = Vector2(5.886019, -2.2981465)
@@ -11,4 +67,17 @@ collision_mask = 7
 script = ExtResource("1_4x4y7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1183225366]
+scale = Vector2(0.8448364, 0.65275615)
 shape = SubResource("CircleShape2D_krl8w")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1164623946]
+texture_filter = 1
+rotation = 1.5707964
+scale = Vector2(0.4334524, 0.28802323)
+sprite_frames = SubResource("SpriteFrames_2n87y")
+
+[node name="ParticulasRocha" type="GPUParticles2D" parent="." unique_id=2011949086]
+texture = SubResource("MeshTexture_fcn8c")
+process_material = SubResource("ParticleProcessMaterial_ui18q")
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

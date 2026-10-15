@@ -2,11 +2,14 @@
 extends CharacterBody2D
 
 @onready var limites_tentaculos: Area2D = get_parent().get_node("LimitesTentaculos")
+@onready var anim = $AnimatedSprite2D
+@onready var sombra = $Sombra
 
 enum Estado {
 	SUBMERSO,
 	PREPARANDO,
 	ATACANDO,
+	RECUANDO,
 	RECUPERANDO,
 	MERGULHANDO,
 	DERROTADO
@@ -20,11 +23,17 @@ enum TipoTentaculo {
 	BARRAGEM
 }
 
+# Partículas
+@onready var particulas_rocha : GPUParticles2D = $ParticulasRocha
+@onready var particulas_raio: GPUParticles2D = $ParticulasRaio
+@onready var particulas_submerso: GPUParticles2D = $ParticulasSubmerso
+
 
 # Ataques
 @export var projetil_rocha: PackedScene
 @export var cena_raio: PackedScene
 @export var numeros_voadores: PackedScene
+@export var velocidade_rotacao: float = 8.0
 
 # Tempos
 @export var tempo_preparacao: float = 0.8
@@ -67,10 +76,59 @@ var indicador_raio: Line2D
 var onda_barragem: Line2D
 var jogador_atingido_barragem: bool = false
 
+var rotacao_inicial : float
+var rotacao_inicial_sprite: float
+var escala_inicial_sprite: Vector2
+
+
 func _ready() -> void:
 	alvo = get_parent().get_node("Player")
+	escala_inicial_sprite = anim.scale
+	rotacao_inicial = rotation
+	rotacao_inicial_sprite = anim.rotation
 	iniciar_ciclo()
 
+func _process(delta: float) -> void:
+	atualizar_animacao_tentaculo()
+	
+	if (
+		estado_atual == Estado.PREPARANDO
+		or estado_atual == Estado.RECUPERANDO
+	):
+		rotation = rotacao_inicial
+		return
+
+	if not is_instance_valid(alvo):
+		return
+
+	# Nessas animações, o tentáculo mantém a orientação atual.
+	if (
+		estado_atual == Estado.PREPARANDO
+		or estado_atual == Estado.RECUANDO
+		or estado_atual == Estado.RECUPERANDO
+	):
+		rotation = rotacao_inicial
+		return
+
+	var direcao_desejada: Vector2
+
+	if estado_atual == Estado.ATACANDO:
+		if tipo == TipoTentaculo.RAIO:
+			direcao_desejada = global_position.direction_to(
+				posicao_jogador
+			)
+		else:
+			direcao_desejada = global_position.direction_to(
+				alvo.global_position
+			)
+
+	if direcao_desejada != Vector2.ZERO:
+		var angulo_desejado = direcao_desejada.angle()
+		rotation = rotate_toward(
+			rotation,
+			angulo_desejado,
+			velocidade_rotacao * delta
+		)
 
 func iniciar_ciclo() -> void:
 	ciclo_tentaculo()
@@ -125,7 +183,9 @@ func ciclo_tentaculo() -> void:
 			TipoTentaculo.ESMAGAMENTO:
 				await executar_esmagamento()
 			TipoTentaculo.ROCHA:
-				executar_rocha()
+				await olhar_para_jogador()
+				await executar_rocha()
+				await get_tree().create_timer(0.5).timeout
 			TipoTentaculo.RAIO:
 				await executar_raio()
 
@@ -161,6 +221,15 @@ func ciclo_tentaculo() -> void:
 			return
 
 		remover_marcador()
+		
+		estado_atual = Estado.RECUANDO
+		atualizar_animacao_tentaculo()
+		atualizar_colisoes(true, false)
+
+		await anim.animation_finished
+
+		if foi_derrotado or not is_inside_tree():
+			return
 
 		estado_atual = Estado.RECUPERANDO
 		atualizar_colisoes(true, true)
@@ -369,6 +438,7 @@ func executar_esmagamento() -> void:
 			return
 
 		var direcao := global_position.direction_to(posicao_jogador)
+		rotation = direcao.angle()
 		velocity = direcao * velocidade_ataque
 		move_and_slide()
 		
@@ -422,14 +492,12 @@ func receber_impacto(bola) -> void:
 	if estado_atual == Estado.ATACANDO:
 		bola.posse = false
 
-	if numeros_voadores != null:
+	if numeros_voadores != null and bola.posse == true:
 		var efeito = numeros_voadores.instantiate()
 		get_parent().add_child(efeito)
 		efeito.global_position = global_position
 
 		efeito.mostrar_pontos(Run.pontuar(bola.pontos))
-	else:
-		Run.pontuar(bola.pontos)
 
 	if pode_receber_dano and bola.posse:
 		afundar()
@@ -465,6 +533,10 @@ func executar_rocha() -> void:
 	pedra.global_position = origem
 	pedra.configurar(direcao)
 
+	particulas_rocha.emitting = true
+	await get_tree().create_timer(0.3).timeout
+	particulas_rocha.emitting = false
+
 
 
 func executar_raio() -> void:
@@ -472,12 +544,18 @@ func executar_raio() -> void:
 		push_warning("Configure a cena do raio em cena_raio!")
 		return
 
+
+
 	for i in range(quantidade_jatadas):
+		
 		if foi_derrotado or not is_inside_tree():
 			remover_marcador()
 			return
 
 		if i > 0:
+			var direcao := global_position.direction_to(
+				posicao_jogador
+			)
 			posicao_jogador = (
 				alvo.global_position
 				+ alvo.velocity * distancia_previsao
@@ -505,6 +583,7 @@ func executar_raio() -> void:
 			direcao = Vector2.RIGHT
 
 		remover_marcador()
+		particulas_raio.emitting = true
 
 		var raio = cena_raio.instantiate()
 		get_parent().add_child(raio)
@@ -521,6 +600,8 @@ func executar_raio() -> void:
 			return
 
 		await arvore.create_timer(0.3, false).timeout
+		
+		particulas_raio.emitting = false
 
 		if foi_derrotado or not is_inside_tree():
 			remover_marcador()
@@ -705,3 +786,92 @@ func verificar_impacto_onda(raio_atual: float) -> void:
 	if distancia <= raio_atual:
 		jogador_atingido_barragem = true
 		alvo.death()
+
+
+func atualizar_animacao_tentaculo() -> void:
+	var nome_estado: String
+	var tipagem: int
+	
+	match tipo:
+		TipoTentaculo.ROCHA:
+			tipagem = 1
+		TipoTentaculo.ESMAGAMENTO:
+			tipagem = 2
+		TipoTentaculo.RAIO:
+			tipagem = 3
+		TipoTentaculo.BARRAGEM:
+			tipagem = 4
+
+	match estado_atual:
+		Estado.SUBMERSO:
+			nome_estado = "submerge"
+		Estado.PREPARANDO:
+			nome_estado = "idle"
+		Estado.ATACANDO:
+			nome_estado = "atq"
+		Estado.RECUANDO:
+			nome_estado = "idle_reverse"
+		Estado.RECUPERANDO:
+			nome_estado = "vul"
+		Estado.MERGULHANDO:
+			nome_estado = "submerge"
+		Estado.DERROTADO:
+			nome_estado = "hurt"
+
+	var nome_animacao = nome_estado
+	
+	if estado_atual == Estado.ATACANDO:
+		anim.rotation = rotacao_inicial_sprite - deg_to_rad(90)
+		anim.scale = Vector2(4.0, 5.0)
+	else:
+		anim.rotation = rotacao_inicial_sprite
+		anim.scale = escala_inicial_sprite
+	
+	if estado_atual == Estado.RECUPERANDO or estado_atual == Estado.PREPARANDO or estado_atual == Estado.RECUANDO:
+		sombra.visible = true
+	else:
+		sombra.visible = false
+	
+	atualizar_particulas()
+
+	if nome_estado != "hurt" and nome_estado != "submerge":
+		nome_animacao += "_" + str(tipagem)
+
+	if anim.animation != nome_animacao:
+		anim.play(nome_animacao)
+		
+
+func atualizar_particulas() -> void:
+	particulas_rocha.emitting = (
+		tipo == TipoTentaculo.ROCHA
+		and estado_atual == Estado.ATACANDO
+	)
+
+	particulas_submerso.emitting = (
+		estado_atual == Estado.SUBMERSO
+		or estado_atual == Estado.MERGULHANDO
+	)
+
+func olhar_para_jogador() -> void:
+	if not is_instance_valid(alvo):
+		return
+
+	var direcao := global_position.direction_to(
+		alvo.global_position
+	)
+	var angulo_desejado := direcao.angle()
+
+	while absf(angle_difference(rotation, angulo_desejado)) > 0.02:
+		if not is_instance_valid(alvo):
+			return
+
+		direcao = global_position.direction_to(alvo.global_position)
+		angulo_desejado = direcao.angle()
+
+		rotation = rotate_toward(
+			rotation,
+			angulo_desejado,
+			velocidade_rotacao * get_process_delta_time()
+		)
+
+		await get_tree().process_frame

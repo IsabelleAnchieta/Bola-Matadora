@@ -4,15 +4,126 @@
 [ext_resource type="Script" uid="uid://cvj2bmc41eyc7" path="res://Enemies/Kraken/scr_hitboxArea.gd" id="2_6k0ed"]
 [ext_resource type="PackedScene" uid="uid://cfqnudh33slav" path="res://GUI/GUI_cena_pontos.tscn" id="2_eld25"]
 [ext_resource type="PackedScene" uid="uid://0hq2lo27c50d" path="res://Enemies/Kraken/obj_tentáculos.tscn" id="2_qdmov"]
+[ext_resource type="Texture2D" uid="uid://bobharwsvt4ji" path="res://Sprites/Kraken/SemNada1.png" id="3_4hryg"]
+[ext_resource type="Texture2D" uid="uid://dme8ngbbyi82" path="res://Sprites/Kraken/SemNada2.png" id="4_8omok"]
+[ext_resource type="Texture2D" uid="uid://ciljvqc0yh6ka" path="res://Sprites/Kraken/SemNada3.png" id="5_pthn3"]
+[ext_resource type="Texture2D" uid="uid://ca2hgrnosv5cp" path="res://Sprites/Kraken/SemNada4.png" id="6_p4rx7"]
+[ext_resource type="Texture2D" uid="uid://23vgnuce3u44" path="res://Sprites/Kraken/SemNada5.png" id="7_20s12"]
+[ext_resource type="Texture2D" uid="uid://c2ww87btfgvef" path="res://Sprites/Kraken/SemNada6.png" id="8_c520y"]
+[ext_resource type="Texture2D" uid="uid://d4d4x6ajvyk5n" path="res://Sprites/Kraken/KrakenFear2.png" id="9_p4rx7"]
+[ext_resource type="Texture2D" uid="uid://dqwxjpjhlm7v" path="res://Sprites/Kraken/KrakenFear1.png" id="10_20s12"]
+[ext_resource type="Texture2D" uid="uid://bvywcc156acjf" path="res://Sprites/Kraken/KrakenFear3.png" id="11_c520y"]
+[ext_resource type="Texture2D" uid="uid://3rj0sc4fax63" path="res://Sprites/Kraken/KrakenHurt.png" id="12_p4rx7"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_6k0ed"]
-radius = 25.019993
+[sub_resource type="SpriteFrames" id="SpriteFrames_h4gky"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_4hryg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_8omok")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_pthn3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_p4rx7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_20s12")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_c520y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_20s12")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_8omok")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_4hryg")
+}],
+"loop": false,
+"name": &"create",
+"speed": 15.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_p4rx7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_p4rx7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_p4rx7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_20s12")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_20s12")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_20s12")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_p4rx7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_p4rx7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_p4rx7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_c520y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_c520y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_c520y")
+}],
+"loop": true,
+"name": &"fear",
+"speed": 15.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("12_p4rx7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_p4rx7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_4hryg")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_4hryg")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_eld25"]
-radius = 35.014282
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0l6lu"]
+radius = 77.99862
+height = 348.02454
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_dwpon"]
-radius = 55.00909
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wwmw0"]
+radius = 95.0
+height = 376.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p4rx7"]
+radius = 51.0
+height = 204.0
 
 [node name="KrakenBoss" type="CharacterBody2D" unique_id=1739257033 groups=["boss", "enemies"]]
 collision_layer = 16
@@ -20,15 +131,26 @@ collision_mask = 6
 script = ExtResource("1_dwpon")
 tentaculo = ExtResource("2_qdmov")
 
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1703186123]
+texture_filter = 1
+position = Vector2(2, -66)
+scale = Vector2(13.395966, 10.702663)
+sprite_frames = SubResource("SpriteFrames_h4gky")
+animation = &"idle"
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1307582921]
-shape = SubResource("CircleShape2D_6k0ed")
+position = Vector2(0, -26)
+rotation = 1.5714803
+shape = SubResource("CapsuleShape2D_0l6lu")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1084318065]
 collision_layer = 16
 collision_mask = 7
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1836386308]
-shape = SubResource("CircleShape2D_eld25")
+position = Vector2(0, -26)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_wwmw0")
 
 [node name="Area2D2" type="Area2D" parent="." unique_id=2043648183 groups=["boss", "enemies"]]
 collision_layer = 16
@@ -38,12 +160,14 @@ numeros_voadores = ExtResource("2_eld25")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2" unique_id=144325995]
 position = Vector2(0, 23)
-shape = SubResource("CircleShape2D_dwpon")
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_p4rx7")
 debug_color = Color(0.9882937, 0.024427367, 0.28153622, 0.41960785)
 
 [node name="Timer" type="Timer" parent="." unique_id=427888043]
 wait_time = 5.0
 
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_entered" from="Area2D2" to="Area2D2" method="_on_body_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

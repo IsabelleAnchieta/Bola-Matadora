@@ -14,6 +14,14 @@ collision_mask = 17
 script = ExtResource("1_4tyjc")
 numeros_voadores = ExtResource("2_r8ho4")
 
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1161468578]
+offset_left = -10.0
+offset_top = -10.000001
+offset_right = 30.0
+offset_bottom = 30.0
+scale = Vector2(0.50434196, 0.5061145)
+color = Color(0, 0, 0, 1)
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=950385413]
 shape = SubResource("RectangleShape2D_4tyjc")
 

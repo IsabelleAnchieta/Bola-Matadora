@@ -3,7 +3,7 @@ extends CharacterBody2D
 @export var tentaculo : PackedScene
 
 @onready var target = get_parent().get_node("Player")
-
+@onready var anim = $AnimatedSprite2D
 
 var ID = "Kraken"
 
@@ -36,6 +36,7 @@ func enviar_tentaculo():
 	quantidade = min(quantidade, tentaculos_protetores)
 
 	tentaculos_protetores -= quantidade
+	anim.play("create")
 
 	for i in quantidade:
 		instanciar_tentaculo()
@@ -76,6 +77,7 @@ func _on_timer_timeout() -> void:
 func hurted(dano):
 	vida -= dano
 	vida_boss.atualizar_vida(vida)
+	anim.play("hurt")
 	if vida <= 0:
 		death()
 	else:
@@ -83,9 +85,9 @@ func hurted(dano):
 
 func verificar_defesa():
 	if tentaculos_protetores == 0:
-		print(tentaculos_protetores)
 		protected = false
 		$Area2D2/CollisionShape2D.disabled = false
+		anim.play("fear")
 
 func death(bola = null) -> void:
 	if dead:
@@ -161,3 +163,8 @@ func receber_impacto(bola) -> void:
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 			body.death()
+
+
+
+func _on_animated_sprite_2d_animation_finished() -> void:
+	anim.play("idle")

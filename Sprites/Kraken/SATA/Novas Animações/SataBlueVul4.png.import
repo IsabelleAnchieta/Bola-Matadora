@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://wudh1yg4rbdi"
-path="res://.godot/imported/Batuta.png-abea44daa8f7a566d8f5dae86b5bea71.ctex"
+uid="uid://cpyyo60gwdbug"
+path="res://.godot/imported/SataBlueVul4.png-98484117b5220fd7edab96d117f3c204.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/Batuta.png"
-dest_files=["res://.godot/imported/Batuta.png-abea44daa8f7a566d8f5dae86b5bea71.ctex"]
+source_file="res://Sprites/Kraken/SATA/Novas Animações/SataBlueVul4.png"
+dest_files=["res://.godot/imported/SataBlueVul4.png-98484117b5220fd7edab96d117f3c204.ctex"]
 
 [params]
 

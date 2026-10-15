@@ -386,7 +386,7 @@ position = Vector2(442, -262)
 scale = Vector2(3.2480893, 2.9218287)
 
 [node name="KrakenBoss" parent="." unique_id=1739257033 instance=ExtResource("3_pw28c")]
-position = Vector2(681, -291)
+position = Vector2(681, -215)
 
 [node name="LimitesTentaculos" type="Area2D" parent="." unique_id=1259267492]
 

@@ -54,7 +54,7 @@ func verificar_impacto_bola(bola: Node2D) -> void:
 	# A mesma velocidade mínima que permite à bola
 	# causar dano ao chefe.
 	if bola.velocidade > 200:
-		destruir()
+		receber_parry()
 
 
 
@@ -67,4 +67,9 @@ func destruir() -> void:
 	
 
 func receber_parry() -> void:
+	set_collision_mask_value(1, false)
+	$AnimatedSprite2D.play("die")
+
+
+func _on_animated_sprite_2d_animation_finished() -> void:
 	destruir()

@@ -10,6 +10,21 @@ extends CharacterBody2D
 @onready var SoundEffect = $MakeSomeSound
 @onready var SoundBase = $BaseBoll
 @onready var MA = get_parent().get_node("MA")
+@onready var animation = $Forma/Sprite2D/AnimatedSprite2D
+@onready var animbatuta = $Taco/Mirando/Mira/Sprite2D/AnimatedSprite2D
+
+
+enum Animacao {
+	IDLE,
+	WALK,
+	ATTACK,
+	PARRY,
+	DASH,
+	DEATH
+}
+
+var estado_atual: Animacao = Animacao.IDLE
+
 
 #Tudo que envolve Bater na Bola
 var atacando = false
@@ -25,6 +40,7 @@ var Dashing = false
 var RecarregarDash = false
 
 var dead = false
+var verdead = false
 
 #Parry
 var parrying = false
@@ -62,7 +78,7 @@ func _physics_process(delta: float) -> void:
 
 	var direcao_movimento = Vector2(direction, v_direction).normalized()
 
-	if direcao_movimento != Vector2.ZERO:
+	if direcao_movimento != Vector2.ZERO and !verdead:
 		velocity = direcao_movimento * SPEED
 	else:
 		velocity = Vector2.ZERO
@@ -120,7 +136,9 @@ func _physics_process(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("Parry"):
 		parry()
-	
+
+	atualizar_estado_animacao()
+
 	move_and_slide()
 	
 	if Dashing:
@@ -186,6 +204,10 @@ func _on_mirando_body_entered(body: Node2D) -> void:
 		body.get_parent().add_child(body.Luz)
 		PartImpc.emitting = true
 		
+	if body.has_method("receber_parry") and parrying:
+		body.receber_parry()
+		$Stop.play()
+		
 	if body.is_in_group("boss") and parrying:
 		$Stop.play()
 		MA.play()
@@ -198,13 +220,8 @@ func _on_mirando_body_exited(body: Node2D) -> void:
 		PartImpc.emitting = false
 
 func death():
-	dead = true
+	verdead = true
 
-func receber_impacto(bola):
-	if bola.velocidade <= 0:
-		bola.posse = true
-	elif !bola.posse:
-		death()
 
 func verificar_trajetoria_taco() -> void:
 	if !atacando:
@@ -271,3 +288,67 @@ func _on_mirando_area_shape_entered(area_rid: RID, area: Area2D, area_shape_inde
 	if area.has_method("receber_parry"):
 		area.receber_parry()
 		$Stop.play()
+
+
+func mudar_estado(novo_estado: Animacao) -> void:
+	if estado_atual == novo_estado:
+		return
+
+	estado_atual = novo_estado
+	atualizar_sprite()
+
+
+func atualizar_sprite() -> void:
+	var nome_animacao: String
+
+	match estado_atual:
+		Animacao.IDLE:
+			nome_animacao = "idle"
+
+		Animacao.WALK:
+			nome_animacao = "walking"
+
+		Animacao.ATTACK:
+			nome_animacao = "attack"
+
+		Animacao.PARRY:
+			nome_animacao = "parry"
+
+		Animacao.DASH:
+			nome_animacao = "dash"
+
+		Animacao.DEATH:
+			nome_animacao = "death"
+
+	if animation.sprite_frames.has_animation(nome_animacao):
+		if animation.animation != nome_animacao or not animation.is_playing():
+			animation.play(nome_animacao)
+			if animbatuta.sprite_frames.has_animation(nome_animacao):
+				animbatuta.play(nome_animacao)
+			else:
+				animbatuta.play("idle")
+
+
+func atualizar_estado_animacao() -> void:
+	var novo_estado: Animacao
+
+	if verdead:
+		novo_estado = Animacao.DEATH
+	elif parrying:
+		novo_estado = Animacao.PARRY
+	elif atacando:
+		novo_estado = Animacao.ATTACK
+	elif Dashing:
+		novo_estado = Animacao.DASH
+	elif velocity.length_squared() > 0.0:
+		novo_estado = Animacao.WALK
+	else:
+		novo_estado = Animacao.IDLE
+
+	mudar_estado(novo_estado)
+
+
+
+func _on_animated_sprite_2d_animation_finished() -> void:
+	if verdead:
+		dead = true

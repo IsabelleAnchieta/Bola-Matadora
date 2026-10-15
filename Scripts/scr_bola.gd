@@ -105,7 +105,6 @@ func atualizar_rastro():
 		rastro2.clear_points()
 	else:
 		rastro2.points = pontos_rastro
-		Run.reset_multi()
 		rastro.clear_points()
 
 func _on_timer_timeout() -> void:
@@ -115,3 +114,6 @@ func finished():
 	rastro.queue_free()
 	rastro2.queue_free()
 	queue_free()
+
+func receber_parry() -> void:
+	velocidade = 0
