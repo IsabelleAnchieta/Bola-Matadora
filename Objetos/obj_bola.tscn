@@ -4,14 +4,38 @@
 [ext_resource type="Texture2D" uid="uid://d1p0setjcdcga" path="res://Sprites/BolaMusical2.png" id="2_joidb"]
 [ext_resource type="PackedScene" uid="uid://b7c84a338lfs0" path="res://Objetos/obj_impactLight.tscn" id="2_s2afo"]
 [ext_resource type="Texture2D" uid="uid://bffctd1nbfv4e" path="res://Sprites/BolaMusical1.png" id="3_s2afo"]
+[ext_resource type="PackedScene" uid="uid://bglaie0uqjp6h" path="res://Objetos/obj_dash_ghost.tscn" id="3_u6e34"]
 [ext_resource type="AudioStream" uid="uid://dqvpurldnnefa" path="res://Audio/Combo.mp3" id="4_jfo68"]
 [ext_resource type="AudioStream" uid="uid://di1o2u0blogcq" path="res://Audio/Pancadinha.mp3" id="4_ni2wd"]
+[ext_resource type="PackedScene" uid="uid://cl48x7jfngn3d" path="res://Objetos/obj_impact.tscn" id="4_ohrxa"]
 [ext_resource type="AudioStream" uid="uid://cqqltqr8p2wf1" path="res://Audio/VineBOOM.mp3" id="5_jfo68"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_er5oi"]
 radius = 18.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_04ycg"]
+
+[sub_resource type="Shader" id="Shader_s2afo"]
+code = "
+shader_type canvas_item;
+
+uniform float intensidade : hint_range(0.0, 1.0) = 0.0;
+
+void fragment() {
+	vec4 cor_original = texture(TEXTURE, UV);
+	vec4 cor_sprite = cor_original * COLOR;
+
+	COLOR = vec4(
+		mix(cor_sprite.rgb, vec3(1.0), intensidade),
+		cor_sprite.a
+	);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ohrxa"]
+resource_local_to_scene = true
+shader = SubResource("Shader_s2afo")
+shader_parameter/intensidade = 0.0
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_u6e34"]
 animations = [{
@@ -52,6 +76,8 @@ collision_layer = 2
 collision_mask = 46
 script = ExtResource("1_xptm7")
 Light = ExtResource("2_s2afo")
+cena_ghost = ExtResource("3_u6e34")
+efeito_pancada = ExtResource("4_ohrxa")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1513872978]
 collision_layer = 2
@@ -67,6 +93,7 @@ debug_color = Color(0.9675438, 0.14596155, 0.28174782, 0.41960785)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CollisionShape2D" unique_id=317170001]
 texture_filter = 1
+material = SubResource("ShaderMaterial_ohrxa")
 sprite_frames = SubResource("SpriteFrames_u6e34")
 animation = &"our"
 

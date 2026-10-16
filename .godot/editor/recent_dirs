@@ -1,6 +1,9 @@
-res://Sprites/
-res://Objetos/
+res://Sprites/Effects/
 res://Scripts/
+res://Objetos/
+res://Shaders/
+res://Tiles/
+res://Sprites/
 res://Enemies/obj_TRUEBOSSES/
 res://Enemies/scr_TRUEBOSSES/
 res://Cenas/

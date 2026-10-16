@@ -1,12 +1,20 @@
 extends CharacterBody2D
 @export var Light : PackedScene
+@export var cena_ghost: PackedScene
+@export var intervalo_ghost: float = 0.035
+@export var duracao_ghost: float = 0.5
+@export var efeito_pancada: PackedScene
 
 @onready var rastro = get_parent().get_node("RastroBola")
 @onready var rastro2 = get_parent().get_node("RastroBola2")
 @onready var PartImpc = $ParticulasImpacto
 @onready var Boom = $Timer
 @onready var Sprite = $CollisionShape2D/AnimatedSprite2D
+@onready var material_flash: ShaderMaterial = Sprite.material
 
+
+var ghost_ativo: bool = false
+var tempo_ghost: float = 0.0
 
 var Ramdomizer
 
@@ -26,9 +34,6 @@ var withplayer =  false
 
 func _physics_process(delta):
 	
-	if Sprite.scale.x < 1:
-		Sprite.scale.x += 0.01
-		
 	
 	if posse:
 		velocidade = move_toward(velocidade, 0, desaceleracao * delta)
@@ -51,6 +56,7 @@ func _physics_process(delta):
 	move_and_slide()
 
 	atualizar_rastro()
+	atualizar_ghost_trail(delta)
 
 	if get_slide_collision_count() > 0:
 		var colisao = get_slide_collision(0)
@@ -117,3 +123,64 @@ func finished():
 
 func receber_parry() -> void:
 	velocidade = 0
+
+
+
+func efeito_impacto_shader() -> void:
+	var tween = create_tween()
+
+	material_flash.set_shader_parameter("intensidade", 1.0)
+
+	tween.tween_method(
+		func(valor: float):
+			material_flash.set_shader_parameter("intensidade", valor),
+		1.0,
+		0.0,
+		0.5
+	).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+
+
+func iniciar_ghost_trail() -> void:
+	ghost_ativo = true
+	tempo_ghost = 0.0
+
+
+func parar_ghost_trail() -> void:
+	ghost_ativo = false
+	tempo_ghost = 0.0
+
+
+func atualizar_ghost_trail(delta: float) -> void:
+	if not ghost_ativo:
+		return
+
+	tempo_ghost += delta
+
+	if tempo_ghost >= duracao_ghost:
+		parar_ghost_trail()
+		return
+
+	if cena_ghost == null:
+		return
+
+	if not has_node("CollisionShape2D/AnimatedSprite2D"):
+		return
+
+	if int(tempo_ghost / intervalo_ghost) != int((tempo_ghost - delta) / intervalo_ghost):
+		var ghost = cena_ghost.instantiate()
+		get_parent().add_child(ghost)
+
+		ghost.configurar(
+			Sprite.sprite_frames.get_frame_texture(
+				Sprite.animation,
+				Sprite.frame
+			),
+			0,
+			1,
+			1,
+			Sprite.global_position,
+			Sprite.global_scale,
+			Sprite.global_rotation,
+			Sprite.flip_h,
+			Sprite.flip_v
+		)

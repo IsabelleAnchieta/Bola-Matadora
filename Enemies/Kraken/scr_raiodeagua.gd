@@ -16,6 +16,7 @@ var ativo := false
 
 
 func _ready() -> void:
+	visual.z_index = -1
 	body_entered.connect(_on_body_entered)
 
 	forma.disabled = true

@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dohmajk8ebdym"]
 
 [ext_resource type="Script" uid="uid://bumyv5u2o4dxv" path="res://GUI/scr_tela_morte.gd" id="1_ur0i7"]
+[ext_resource type="FontFile" uid="uid://c2qrub8qgafxn" path="res://Fontes/PressStart2P-Regular.ttf" id="2_yebdm"]
 
 [node name="TelaMorte" type="Control" unique_id=1056075377]
 layout_mode = 3
@@ -43,12 +44,14 @@ grow_vertical = 2
 [node name="Button" type="Button" parent="VBoxContainer" unique_id=150344861]
 layout_mode = 2
 size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("2_yebdm")
 text = "Restart"
 icon_alignment = 1
 
 [node name="Button2" type="Button" parent="VBoxContainer" unique_id=1933501081]
 layout_mode = 2
 size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("2_yebdm")
 text = "Quit"
 icon_alignment = 1
 
@@ -63,10 +66,12 @@ layout_mode = 2
 
 [node name="Label2" type="Label" parent="VBoxContainer/Centralize/Cont" unique_id=1514605102]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_yebdm")
 text = "Seu tempo:"
 
 [node name="Label3" type="Label" parent="VBoxContainer/Centralize/Cont" unique_id=1015617817]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_yebdm")
 text = "Seu tempo:"
 
 [connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_button_pressed"]

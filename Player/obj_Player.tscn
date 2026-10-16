@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://cft8uii5ovijd" path="res://Sprites/Player/PendriveAtq.png" id="2_3ds1j"]
 [ext_resource type="Texture2D" uid="uid://peqb13w0ox5l" path="res://Sprites/Player/PendriveWalk1.png" id="2_bpy3q"]
 [ext_resource type="Script" uid="uid://dlr0p5tp3rko0" path="res://Scripts/scr_camera.gd" id="2_hxlgx"]
+[ext_resource type="PackedScene" uid="uid://cfqnudh33slav" path="res://GUI/GUI_cena_pontos.tscn" id="2_wa7qx"]
 [ext_resource type="Script" uid="uid://b75vwmcbaqbu3" path="res://Scripts/scr_taco.gd" id="3_kxxtb"]
 [ext_resource type="Texture2D" uid="uid://bqorb6f78wp67" path="res://Sprites/Player/PendriveWalk2.png" id="3_ro4o8"]
 [ext_resource type="Texture2D" uid="uid://b3431tf33c5lp" path="res://Sprites/Player/PendriveDash.png" id="3_x5hdw"]
@@ -243,6 +244,7 @@ colors = PackedColorArray(1, 1, 0, 1, 1, 1, 1, 0)
 [node name="Player" type="CharacterBody2D" unique_id=1725797651 groups=["player"]]
 collision_mask = 4
 script = ExtResource("1_0q0wf")
+numeros_voadores = ExtResource("2_wa7qx")
 
 [node name="Forma" type="CollisionShape2D" parent="." unique_id=1138811625]
 shape = SubResource("CircleShape2D_hxlgx")

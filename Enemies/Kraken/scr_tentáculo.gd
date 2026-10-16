@@ -3,6 +3,7 @@ extends CharacterBody2D
 
 @onready var limites_tentaculos: Area2D = get_parent().get_node("LimitesTentaculos")
 @onready var anim = $AnimatedSprite2D
+@onready var material_flash: ShaderMaterial = anim.material
 @onready var sombra = $Sombra
 
 enum Estado {
@@ -34,6 +35,8 @@ enum TipoTentaculo {
 @export var cena_raio: PackedScene
 @export var numeros_voadores: PackedScene
 @export var velocidade_rotacao: float = 8.0
+@export var forca_empurrao: float = 35.0
+
 
 # Tempos
 @export var tempo_preparacao: float = 0.8
@@ -80,6 +83,7 @@ var rotacao_inicial : float
 var rotacao_inicial_sprite: float
 var escala_inicial_sprite: Vector2
 
+var empurrao_ativo: bool = false
 
 func _ready() -> void:
 	alvo = get_parent().get_node("Player")
@@ -386,7 +390,7 @@ func criar_marcador_raio() -> void:
 	indicador_raio = Line2D.new()
 	indicador_raio.width = largura_indicador_raio
 	indicador_raio.default_color = Color(1.0, 0.15, 0.15, 0.9)
-	indicador_raio.z_index = 10
+	indicador_raio.z_index = -1
 
 	get_parent().add_child(indicador_raio)
 
@@ -412,6 +416,7 @@ func remover_marcador() -> void:
 
 
 func executar_esmagamento() -> void:
+	mostrar_onomatopeia_ataque()
 	var arvore := get_tree()
 
 	if arvore == null or not is_inside_tree():
@@ -487,6 +492,8 @@ func afundar() -> void:
 
 
 func receber_impacto(bola) -> void:
+	efeito_impacto_shader()
+	aplicar_empurrao(bola)
 	bola.rebater(-bola.direcao, 1000)
 
 	if estado_atual == Estado.ATACANDO:
@@ -498,6 +505,8 @@ func receber_impacto(bola) -> void:
 		efeito.global_position = global_position
 
 		efeito.mostrar_pontos(Run.pontuar(bola.pontos))
+		Run.multiplicar(0.1)
+		
 
 	if pode_receber_dano and bola.posse:
 		afundar()
@@ -534,6 +543,7 @@ func executar_rocha() -> void:
 	pedra.configurar(direcao)
 
 	particulas_rocha.emitting = true
+	mostrar_onomatopeia_ataque()
 	await get_tree().create_timer(0.3).timeout
 	particulas_rocha.emitting = false
 
@@ -587,6 +597,7 @@ func executar_raio() -> void:
 
 		var raio = cena_raio.instantiate()
 		get_parent().add_child(raio)
+		mostrar_onomatopeia_ataque()
 
 		var excluidos: Array[RID] = [
 			alvo.get_rid(),
@@ -733,6 +744,7 @@ func criar_onda_barragem() -> void:
 		onda_barragem.add_point(Vector2(cos(angulo), sin(angulo)) * 5.0)
 
 	get_parent().add_child(onda_barragem)
+	mostrar_onomatopeia_ataque()
 	onda_barragem.global_position = posicao_barragem
 
 	var duracao := 0.7
@@ -875,3 +887,70 @@ func olhar_para_jogador() -> void:
 		)
 
 		await get_tree().process_frame
+
+func efeito_impacto_shader() -> void:
+	var tween = create_tween()
+
+	material_flash.set_shader_parameter("intensidade", 1.0)
+
+	tween.tween_method(
+		func(valor: float):
+			material_flash.set_shader_parameter("intensidade", valor),
+		1.0,
+		0.0,
+		0.5
+	).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+
+func aplicar_empurrao(bola) -> void:
+	var direcao_empurrao : = Vector2(
+		global_position - bola.global_position
+	).normalized()
+
+	if direcao_empurrao == Vector2.ZERO:
+		return
+
+	var posicao_inicial := global_position
+	var posicao_final := (
+		posicao_inicial + direcao_empurrao * forca_empurrao
+	)
+
+	var tween := create_tween()
+	tween.tween_property(
+		self,
+		"global_position",
+		posicao_final,
+		0.12
+	).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+
+
+
+func mostrar_onomatopeia_ataque() -> void:
+	if numeros_voadores == null:
+		return
+
+	var palavras: Array[String]
+	var cor: Color
+
+	match tipo:
+		TipoTentaculo.ROCHA:
+			palavras = ["KRAK!", "THOOM!", "CRASH!", "BOOM!"]
+			cor = Color("#FF79C6") # Rosa
+
+		TipoTentaculo.ESMAGAMENTO:
+			palavras = ["KTHOOM!", "BWAM!", "DOOM!", "THRAK!"]
+			cor = Color("#FF4545") # Vermelho
+
+		TipoTentaculo.RAIO:
+			palavras = ["VZZRAK!", "KRAZZT!", "VRZZT!", "ZAP!"]
+			cor = Color("dfd323ff") # Azul
+
+		TipoTentaculo.BARRAGEM:
+			palavras = ["VRASHH!", "FWOOSH!", "SHLAAAP!", "WHAM!"]
+			cor = Color("#438CFF") # Azul
+
+	var efeito = numeros_voadores.instantiate()
+	get_parent().add_child(efeito)
+
+	efeito.global_position = global_position
+	efeito.mostrar_pontos(palavras.pick_random())
+	efeito.add_theme_color_override("font_color", cor)

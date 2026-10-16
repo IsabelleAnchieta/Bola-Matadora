@@ -1,5 +1,10 @@
 extends CharacterBody2D
 
+const CENA_DASH_GHOST: PackedScene = preload("res://Objetos/obj_dash_ghost.tscn")
+
+@export var numeros_voadores: PackedScene
+@export var intervalo_ghost: float = 0.035
+
 @onready var Mira = $Taco/Mirando/Mira
 @onready var Cooldown = $Timer_Load
 @onready var WaitDash = $Timer_Dash
@@ -35,9 +40,14 @@ var mira_anterior: Vector2
 var tempo_particula = 0.0
 var movimento_mouse: Vector2
 
+var pancada_acertou_bola: bool = false
+var pancada_em_andamento: bool = false
+
+
 #Tudo que envolve dash
 var Dashing = false
 var RecarregarDash = false
+var cronometro_ghost: float = 0.0
 
 var dead = false
 var verdead = false
@@ -49,6 +59,7 @@ var duracao_parry = 0.15
 var recuperacao_parry = 0.0
 var tempo_rec_parry = 1
 var pseudo_tempo = true
+var efeito_parry_ativo: bool = false
 
 var SPEED = 400.0
 
@@ -64,7 +75,6 @@ func _physics_process(delta: float) -> void:
 		tempo_particula -= delta
 		if tempo_particula <= 0:
 			PartImpc.emitting = false
-
 
 	var mousepos = get_global_mouse_position()
 	var look = global_position.direction_to(mousepos)
@@ -92,6 +102,7 @@ func _physics_process(delta: float) -> void:
 
 	if tempo_parry <= 0:
 		parrying = false
+		set_collision_layer_value(1, true)
 		if pseudo_tempo == true:
 			recuperacao_parry = tempo_rec_parry
 			pseudo_tempo = false
@@ -136,8 +147,16 @@ func _physics_process(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("Parry"):
 		parry()
+		set_collision_layer_value(1, false)
 
 	atualizar_estado_animacao()
+
+	if Dashing:
+		cronometro_ghost -= delta
+
+		if cronometro_ghost <= 0.0:
+			criar_dash_ghost()
+			cronometro_ghost = intervalo_ghost
 
 	move_and_slide()
 	
@@ -161,6 +180,10 @@ func shooting():
 		SoundEffect.play()
 		Camera.efeito_ataque(Camera.zoom_ataque)
 		atacando = true
+		
+		pancada_acertou_bola = false
+		pancada_em_andamento = true
+		
 		recarregando = true
 		Cooldown.start()
 		
@@ -169,8 +192,16 @@ func _on_timer_timeout() -> void:
 	recarregando = false
 	atacando = false
 
+	if pancada_em_andamento:
+		if not pancada_acertou_bola:
+			mostrar_texto_pancada("???")
+
+		pancada_em_andamento = false
+
+
 func dash():
 	if !RecarregarDash:
+		cronometro_ghost = 0.0
 		Dashing = true
 		RecarregarDash = true
 		WaitDash.start()
@@ -192,26 +223,32 @@ func _on_mirando_body_entered(body: Node2D) -> void:
 		var forca = clamp(velocidade_mouse * 0.1, 0.0, 2000.0)
 		var attack_direction = movimento_mouse.normalized()
 		Run.multiplicar(0.1)
+		aplicar_hitstop(forca)
+		body.iniciar_ghost_trail()
+
+		if body.efeito_pancada != null:
+			var efeito = body.efeito_pancada.instantiate()
+			get_tree().current_scene.add_child(efeito)
+			efeito.global_position = body.global_position
 		Camera.impacto(forca)
 		body.rebater(attack_direction, forca)
+		body.efeito_impacto_shader()
 		atacando = false
+		pancada_acertou_bola = true
+		mostrar_texto_pancada(avaliar_pancada(forca))
 		body.posse = true
-		body.Sprite.scale.x = 0.5
-		#PARA CRIAR O EFEITO DE BOLA
-		body.Luz = body.Light.instantiate()
-		body.Luz.For = forca/100
-		body.Luz.global_position = body.global_position
-		body.get_parent().add_child(body.Luz)
 		PartImpc.emitting = true
 		
 	if body.has_method("receber_parry") and parrying:
 		body.receber_parry()
+		efeito_visual_parry()
 		$Stop.play()
 		
 	if body.is_in_group("boss") and parrying:
 		$Stop.play()
 		MA.play()
 		body.receber_parry()
+		efeito_visual_parry()
 		parrying = false
 
 
@@ -243,8 +280,18 @@ func verificar_trajetoria_taco() -> void:
 
 				Run.multiplicar(0.1)
 				Camera.impacto(forca)
+				aplicar_hitstop(forca)
 				bola.rebater(attack_direction, forca)
+				bola.iniciar_ghost_trail()
+
+				if bola.efeito_pancada != null:
+					var efeito = bola.efeito_pancada.instantiate()
+					get_tree().current_scene.add_child(efeito)
+					efeito.global_position = bola.global_position
+				
 				atacando = false
+				pancada_acertou_bola = true
+				mostrar_texto_pancada(avaliar_pancada(forca))
 				bola.posse = true
 				PartImpc.emitting = true
 				tempo_particula = 0.1
@@ -273,6 +320,7 @@ func empurrar_bola(direcao_input: Vector2):
 		else:
 			withball = false
 			bola.withplayer = false
+
 func parry():
 	if parrying:
 		return
@@ -282,12 +330,19 @@ func parry():
 		tempo_parry = duracao_parry
 
 
-func _on_mirando_area_shape_entered(area_rid: RID, area: Area2D, area_shape_index: int, local_shape_index: int) -> void:
+func _on_mirando_area_shape_entered(
+	area_rid: RID,
+	area: Area2D,
+	area_shape_index: int,
+	local_shape_index: int
+) -> void:
 	if not parrying:
 		return
+
 	if area.has_method("receber_parry"):
 		area.receber_parry()
 		$Stop.play()
+		efeito_visual_parry()
 
 
 func mudar_estado(novo_estado: Animacao) -> void:
@@ -352,3 +407,114 @@ func atualizar_estado_animacao() -> void:
 func _on_animated_sprite_2d_animation_finished() -> void:
 	if verdead:
 		dead = true
+
+
+
+func criar_dash_ghost() -> void:
+	var personagem := $Forma/Sprite2D/AnimatedSprite2D as AnimatedSprite2D
+
+	if personagem == null or personagem.sprite_frames == null:
+		return
+
+	var fantasma = CENA_DASH_GHOST.instantiate()
+	get_tree().current_scene.add_child(fantasma)
+
+	var textura := personagem.sprite_frames.get_frame_texture(
+		personagem.animation,
+		personagem.frame
+	)
+
+	fantasma.configurar(
+		textura,
+		0,
+		1,
+		1,
+		personagem.global_position,
+		personagem.global_scale,
+		personagem.global_rotation,
+		personagem.flip_h,
+		personagem.flip_v
+	)
+
+
+func efeito_visual_parry() -> void:
+	if efeito_parry_ativo:
+		return
+
+	efeito_parry_ativo = true
+
+	var zoom_original: Vector2 = Camera.zoom
+	var escala_tempo_original: float = Engine.time_scale
+
+	# Desacelera o jogo.
+	Engine.time_scale = 0.35
+
+	# Aproxima a câmera.
+	var entrada := create_tween()
+	entrada.set_ignore_time_scale(true)
+	entrada.tween_property(
+		Camera,
+		"zoom",
+		zoom_original * 1.2,
+		0.12
+	).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+
+	# Mantém o efeito pelo tempo desejado.
+	await get_tree().create_timer(
+		0.5, true, false, true
+	).timeout
+
+	# Volta ao zoom original.
+	var saida := create_tween()
+	saida.set_ignore_time_scale(true)
+	saida.tween_property(
+		Camera,
+		"zoom",
+		zoom_original,
+		0.18
+	).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+
+	await saida.finished
+
+	Engine.time_scale = escala_tempo_original
+	efeito_parry_ativo = false
+
+
+func avaliar_pancada(forca: float) -> String:
+	if forca < 500.0:
+		return "Meh"
+	elif forca < 1300.0:
+		return "Great!"
+	else:
+		return "PERFECT!"
+
+
+func mostrar_texto_pancada(mensagem: String) -> void:
+	var texto = numeros_voadores.instantiate()
+	get_tree().current_scene.add_child(texto)
+	texto.global_position = global_position
+	texto.mostrar_pontos(mensagem)
+
+
+
+func aplicar_hitstop(forca: float) -> void:
+	var duracao: float
+
+	if forca < 500.0:
+		duracao = 0.025 # Meh
+	elif forca < 1300.0:
+		duracao = 0.07 # Great!
+	else:
+		duracao = 0.1 # PERFECT!
+
+	var escala_anterior := Engine.time_scale
+	Engine.time_scale = 0.05
+
+	await get_tree().create_timer(
+		duracao,
+		true,
+		false,
+		true
+	).timeout
+
+	Engine.time_scale = escala_anterior

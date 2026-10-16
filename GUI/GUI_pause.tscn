@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bpxelsvgfdoot"]
 
 [ext_resource type="Script" uid="uid://vsnk4vfjddsn" path="res://GUI/scr_pause.gd" id="1_h57f8"]
+[ext_resource type="FontFile" uid="uid://c2qrub8qgafxn" path="res://Fontes/PressStart2P-Regular.ttf" id="2_atijs"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_qtgj3"]
 font_size = 54
@@ -34,6 +35,7 @@ offset_top = 188.0
 offset_right = 190.0
 offset_bottom = 262.0
 grow_horizontal = 2
+theme_override_fonts/font = ExtResource("2_atijs")
 text = "Game PAUSED"
 label_settings = SubResource("LabelSettings_qtgj3")
 uppercase = true
@@ -54,14 +56,17 @@ grow_vertical = 2
 
 [node name="Button" type="Button" parent="VBoxContainer" unique_id=2109684424]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_atijs")
 text = "Resume"
 
 [node name="Button2" type="Button" parent="VBoxContainer" unique_id=1178009926]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_atijs")
 text = "Restart"
 
 [node name="Button3" type="Button" parent="VBoxContainer" unique_id=582480379]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_atijs")
 text = "Quit"
 
 [node name="Centralize" type="CenterContainer" parent="VBoxContainer" unique_id=107060807]
@@ -75,10 +80,12 @@ layout_mode = 2
 
 [node name="Label2" type="Label" parent="VBoxContainer/Centralize/Cont" unique_id=391151463]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_atijs")
 text = "Seu tempo:"
 
 [node name="Label3" type="Label" parent="VBoxContainer/Centralize/Cont" unique_id=880369551]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_atijs")
 text = "Seu tempo:"
 
 [connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_button_pressed"]

@@ -321,8 +321,8 @@ position = Vector2(537, 554)
 scale = Vector2(7.5399566, 1.2259641)
 
 [node name="Node2D" parent="." unique_id=1364803582 instance=ExtResource("11_c1xld")]
-position = Vector2(687, 643.00006)
-scale = Vector2(-7.1571207, 10.727159)
+position = Vector2(682, 456)
+scale = Vector2(-12.24224, 5.944534)
 
 [node name="CameraFake" type="Node2D" parent="." unique_id=1309653038]
 position = Vector2(688, 675)

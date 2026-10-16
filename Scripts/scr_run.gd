@@ -31,7 +31,7 @@ func _process(delta: float) -> void:
 		tempo += delta
 
 func pontuar(valor):
-	var ganho = valor * multiplicador
+	var ganho = int(valor * multiplicador)
 	pontos += ganho
 	pontos_alterados.emit()
 	return ganho

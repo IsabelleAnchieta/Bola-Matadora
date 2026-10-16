@@ -77,6 +77,8 @@ func _on_timer_timeout() -> void:
 func hurted(dano):
 	vida -= dano
 	vida_boss.atualizar_vida(vida)
+	Run.multiplicar(0.1)
+	
 	anim.play("hurt")
 	if vida <= 0:
 		death()

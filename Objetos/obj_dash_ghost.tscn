@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://bglaie0uqjp6h"]
+
+[ext_resource type="Script" uid="uid://dbsydsgpskgey" path="res://scr_dash_ghost.gd" id="1_vsth0"]
+
+[node name="DashGhost" type="Node2D" unique_id=886846783]
+script = ExtResource("1_vsth0")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1820855606]

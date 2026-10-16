@@ -10,6 +10,7 @@ collision_mask = 5
 script = ExtResource("1_gyd20")
 
 [node name="Line2D" type="Line2D" parent="." unique_id=749553135]
+default_color = Color(0.89979166, 0.9058309, 0.37957397, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1733453109]
 shape = SubResource("RectangleShape2D_kvexn")
